@@ -24,7 +24,7 @@ compile_commands.json
 *.lib
 *.o
 *.obj
-*.pdb
+*.pdf
 
 # User-specific files
 *.log
