@@ -1,0 +1,46 @@
+# CLion-specific
+.idea/
+*.iml
+
+# CMake-specific
+**/test.cpp
+
+# CMake build folders
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# Executables and binaries
+*.out
+*.exe
+*.app
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.o
+*.obj
+*.pdb
+
+# User-specific files
+*.log
+*.user
+*.suo
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+*.pidb
+
+# Backup or temp files
+*~
+*.swp
+*.tmp
+
+# Windows
+Thumbs.db
+desktop.ini
