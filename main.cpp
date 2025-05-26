@@ -70,7 +70,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             AppendMenu(Shape, MF_POPUP, (UINT_PTR)lineAlgorithms , "Line");
             AppendMenu(Shape, MF_POPUP, (UINT_PTR)circleAlgorithms, "Circle");
             AppendMenu(Shape, MF_POPUP, (UINT_PTR)ellipseAlgorithms, "Ellipse");
-            AppendMenu(Shape, MF_STRING, 44, "Cardinal Spline Curve ");
+            AppendMenu(Shape, MF_STRING, 44, "Cardinal Spline Curve");
 
             //!=========================================================================================================
 
@@ -79,8 +79,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             HMENU Filling = CreatePopupMenu();
             AppendMenu(Filling, MF_STRING, 51, "Filling Circle with lines");
             AppendMenu(Filling, MF_STRING, 52, "Filling Circle with circles");
-            AppendMenu(Filling, MF_STRING, 53, "Filling Square with Hermit [Vertical] ");
-            AppendMenu(Filling, MF_STRING, 54, "Filling Rectangle with Bezier [horizontal] ");
+            AppendMenu(Filling, MF_STRING, 53, "Filling Square with Hermit [Vertical]");
+            AppendMenu(Filling, MF_STRING, 54, "Filling Rectangle with Bezier [horizontal]");
             AppendMenu(Filling, MF_STRING, 55, "Convex Filling");
             AppendMenu(Filling, MF_STRING, 56, "Non Convex Filling");
             AppendMenu(Filling, MF_STRING, 57, "Recursive Flood Fill");
@@ -134,22 +134,213 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             // TODO: WM_COMMAND
 
+            switch (LOWORD(wp)) {
+
+                // ? MAIN_MENU
+                case 101: {
+                    // TODO: CLEAR
+                    break;
+                }
+                case 102 : {
+                    // TODO: SAVE
+                    break;
+                }
+                case 103 : {
+                    // TODO: LOAD
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? BG_COLOR
+                case 11: {
+                    // TODO: BG_COLOR_WHITE
+                    break;
+                }
+                case 12: {
+                    // TODO: BG_COLOR_BLACK
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? CURSOR_CHANGE
+                case 21: {
+                    // TODO: CURSOR_CHANGE_DEFAULT(ARROW)
+                    break;
+                }
+                case 22: {
+                    // TODO: CURSOR_CHANGE_CROSS
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? SHAPE_COLOR
+                case 31: {
+                    // TODO: SHAPE_COLOR_RED
+                    break;
+                }
+                case 32: {
+                    // TODO: SHAPE_COLOR_GREEN
+                    break;
+                }
+                case 33: {
+                    // TODO: SHAPE_COLOR_BLUE
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? Line
+                case 411: {
+                    // TODO: DDA
+                    break;
+                }
+                case 412: {
+                    // TODO: Midpoint
+                    break;
+                }
+                case 413: {
+                    // TODO: Parametric
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? Circle
+                case 421: {
+                    // TODO: Direct
+                    break;
+                }
+                case 422: {
+                    // TODO: Polar
+                    break;
+                }
+                case 423: {
+                    // TODO: Iterative Polar
+                    break;
+                }
+                case 424: {
+                    // TODO: Midpoint
+                    break;
+                }
+                case 425: {
+                    // TODO: Modified Midpoint
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? Ellipse
+                case 431: {
+                    // TODO: Direct
+                    break;
+                }
+                case 432: {
+                    // TODO: Polar
+                    break;
+                }
+                case 433: {
+                    // TODO: Midpoint
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                case 44:{
+                    // TODO: Cardinal_Spline_Curve
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? Filling
+                case 51: {
+                    // TODO: Filling Circle with lines
+                    break;
+                }
+                case 52: {
+                    // TODO: Filling Circle with circles
+                    break;
+                }
+                case 53: {
+                    // TODO: Filling Square with Hermit [Vertical]
+                    break;
+                }
+                case 54: {
+                    // TODO: Filling Rectangle with Bezier [horizontal]
+                    break;
+                }
+                case 55:{
+                    // TODO: Convex Filling
+                    break;
+                }
+                case 56:{
+                    // TODO: Non-Convex Filling
+                    break;
+                }
+                case 57:{
+                    // TODO: Recursive Flood Fill
+                    break;
+                }
+                case 58:{
+                    // TODO: Non-Recursive Flood Fill
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? CLIPPING RECTANGLE
+                case 611:{
+                    // TODO: CLIPPING RECTANGLE POINT
+                    break;
+                }
+                case 612:{
+                    // TODO: CLIPPING RECTANGLE LINE
+                    break;
+                }
+                case 613:{
+                    // TODO: CLIPPING RECTANGLE POLYGON
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? CLIPPING SQUARE
+                case 621:{
+                    // TODO: CLIPPING SQUARE POINT
+                    break;
+                }
+                case 622:{
+                    // TODO: CLIPPING SQUARE LINE
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                default:{
+                    break;
+                }
+
+            }
+
             break;
         }
 
-        case WM_LBUTTONDOWN: {
-
-            // TODO: LBUTTONDOWN
-
-            break;
-        }
-
-        case WM_LBUTTONUP: {
-
-            // TODO: LBUTTONUP
-
-            break;
-        }
+//        case WM_LBUTTONDOWN: {
+//
+//            TODO: LBUTTONDOWN
+//
+//            break;
+//        }
+//
+//        case WM_LBUTTONUP: {
+//
+//            TODO: LBUTTONUP
+//
+//            break;
+//        }
 
         case WM_CLOSE: {
             DestroyWindow(hwnd);
