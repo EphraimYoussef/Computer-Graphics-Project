@@ -4,6 +4,7 @@
 
 # CMake-specific
 **/test.cpp
+**/CMakeLists.txt
 
 # CMake build folders
 cmake-build-*/
