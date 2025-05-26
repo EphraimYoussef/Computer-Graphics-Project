@@ -1,16 +1,19 @@
 #include <Windows.h>
+#include "lineAlgorithms.h"
 
-
+HBRUSH BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     HDC hdc;
     HMENU mainMenu;
-
+    static int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+    static int currentTool = 0;
+    static COLORREF c = RGB(255, 0, 0);
     switch (msg) {
 
         case WM_CREATE: {
 
-            // TODO:BG_COLOR
+            // ! BG_COLOR
             // ? command ID -> 1#
             HMENU BGColor = CreatePopupMenu();
             AppendMenu(BGColor, MF_STRING, 11, "White");
@@ -18,7 +21,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //!=========================================================================================================
 
-            // TODO:CURSOR_Change
+            // ! CURSOR_Change
             // ? command ID -> 2#
             HMENU Cursor = CreatePopupMenu();
             AppendMenu(Cursor, MF_STRING, 21, "Arrow");
@@ -26,7 +29,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //!=========================================================================================================
 
-            // TODO:SHAPE_COLOR
+            // ! SHAPE_COLOR
             // ? command ID -> 3#
             HMENU ShapeColor = CreatePopupMenu();
             AppendMenu(ShapeColor, MF_STRING, 31, "Red");
@@ -154,23 +157,32 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
                 // ? BG_COLOR
                 case 11: {
-                    // TODO: BG_COLOR_WHITE
+                    // ! BG_COLOR_WHITE
+                    BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
+                    InvalidateRect(hwnd, nullptr, TRUE);
                     break;
                 }
                 case 12: {
-                    // TODO: BG_COLOR_BLACK
+                    // ! BG_COLOR_BLACK
+                    BGBrush = (HBRUSH)GetStockObject(BLACK_BRUSH);
+                    InvalidateRect(hwnd, nullptr, TRUE);
                     break;
                 }
 
             //!=========================================================================================================
 
-                // ? CURSOR_CHANGE
                 case 21: {
-                    // TODO: CURSOR_CHANGE_DEFAULT(ARROW)
+                    // ! CURSOR_ARROW
+                    HCURSOR hCursor = LoadCursor(nullptr, IDC_ARROW);
+                    SetClassLongPtr(hwnd, GCLP_HCURSOR, (LONG_PTR)hCursor);
+                    SetCursor(hCursor);
                     break;
                 }
                 case 22: {
-                    // TODO: CURSOR_CHANGE_CROSS
+                    // ! CURSOR_CROSS
+                    HCURSOR hCursor = LoadCursor(nullptr, IDC_CROSS);
+                    SetClassLongPtr(hwnd, GCLP_HCURSOR, (LONG_PTR)hCursor);
+                    SetCursor(hCursor);
                     break;
                 }
 
@@ -178,15 +190,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
                 // ? SHAPE_COLOR
                 case 31: {
-                    // TODO: SHAPE_COLOR_RED
+                    // ! SHAPE_COLOR_RED
+                    c = RGB(255, 0, 0);
                     break;
                 }
                 case 32: {
-                    // TODO: SHAPE_COLOR_GREEN
+                    // ! SHAPE_COLOR_GREEN
+                    c = RGB(0, 255, 0);
                     break;
                 }
                 case 33: {
-                    // TODO: SHAPE_COLOR_BLUE
+                    // ! SHAPE_COLOR_BLUE
+                    c = RGB(0, 0, 255);
                     break;
                 }
 
@@ -195,14 +210,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 // ? Line
                 case 411: {
                     // TODO: DDA
+                    currentTool = 411;
                     break;
                 }
                 case 412: {
-                    // TODO: Midpoint
+                    // ! Midpoint
+                    currentTool = 412;
                     break;
                 }
                 case 413: {
                     // TODO: Parametric
+                    currentTool = 413;
                     break;
                 }
 
@@ -328,19 +346,34 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             break;
         }
 
-//        case WM_LBUTTONDOWN: {
-//
-//            TODO: LBUTTONDOWN
-//
-//            break;
-//        }
-//
-//        case WM_LBUTTONUP: {
-//
-//            TODO: LBUTTONUP
-//
-//            break;
-//        }
+        case WM_LBUTTONDOWN: {
+            if (currentTool == 412) {
+                x1 = LOWORD(lp);
+                y1 = HIWORD(lp);
+            }
+            break;
+        }
+
+        case WM_LBUTTONUP: {
+            if (currentTool == 412) {
+                x2 = LOWORD(lp);
+                y2 = HIWORD(lp);
+
+                hdc = GetDC(hwnd);
+                MidPointLine(hdc, x1, y1, x2, y2, c);
+                ReleaseDC(hwnd, hdc);
+            }
+            break;
+        }
+
+
+        case WM_ERASEBKGND: {
+            hdc = (HDC)wp;
+            RECT rc;
+            GetClientRect(hwnd, &rc);
+            FillRect(hdc, &rc, BGBrush);
+            return 1;
+        }
 
         case WM_CLOSE: {
             DestroyWindow(hwnd);
@@ -363,7 +396,6 @@ int APIENTRY WinMain(HINSTANCE hi, HINSTANCE pi, LPSTR cmd, int nsh) {
     WNDCLASS wc = {};
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
-    wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hIcon = LoadIcon(nullptr, IDI_WINLOGO);
     wc.lpszClassName = "2D drawing program";
