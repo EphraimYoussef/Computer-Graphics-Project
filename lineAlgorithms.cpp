@@ -1,4 +1,33 @@
 #include <Windows.h>
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void DDALine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c) {
+    int dx = x2 - x1, dy = y2 - y1;
+    SetPixel(hdc, x1, y1, c);
+    if(abs(dx) > abs(dy)) {
+        int x = x1;
+        double y = y1;
+        double m = ((double)dy / (double)dx);
+        while(x != x2) {
+            x += (dx > 0) ? 1 : -1;
+            y += (m * (dx > 0 ? 1 : -1));
+            SetPixel(hdc, x, (int)round(y), c);
+        }
+    }
+    else {
+        double x = x1;
+        int y = y1;
+        double m = ((double)dx / (double)dy);
+        while(y != y2) {
+            y += (dy > 0) ? 1 : -1;
+            x += (m * (dy > 0 ? 1 : -1));
+            SetPixel(hdc, (int)round(x), y, c);
+        }
+    }
+}
+
 
 void MidPointLine(HDC hdc, int x1, int y1, int x2, int y2 , COLORREF c) {
     int dx = abs(x2 - x1), dy = abs(y2 - y1);

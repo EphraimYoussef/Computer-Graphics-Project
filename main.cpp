@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "lineAlgorithms.h"
+#include "GraphicsAlgorithms.h"
 
 HBRUSH BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
 
@@ -347,22 +347,61 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
         }
 
         case WM_LBUTTONDOWN: {
-            if (currentTool == 412) {
-                x1 = LOWORD(lp);
-                y1 = HIWORD(lp);
+            switch (currentTool) {
+
+                // ? Line Algorithms
+                case 411:
+                case 412:
+                case 413: {
+                    x1 = LOWORD(lp);
+                    y1 = HIWORD(lp);
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                default: {
+                    break;
+                }
             }
+
             break;
         }
 
         case WM_LBUTTONUP: {
-            if (currentTool == 412) {
-                x2 = LOWORD(lp);
-                y2 = HIWORD(lp);
+            switch (currentTool) {
+                case 411: {
+                    x2 = LOWORD(lp);
+                    y2 = HIWORD(lp);
+                    hdc = GetDC(hwnd);
+                    DDALine(hdc, x1, y1, x2, y2, c);
+                    ReleaseDC(hwnd, hdc);
+                    break;
+                }
+                case 412: {
+                    x2 = LOWORD(lp);
+                    y2 = HIWORD(lp);
+                    hdc = GetDC(hwnd);
+                    MidPointLine(hdc, x1, y1, x2, y2, c);
+                    ReleaseDC(hwnd, hdc);
+                    break;
+                }
+                case 413: {
+//                    x2 = LOWORD(lp);
+//                    y2 = HIWORD(lp);
+//                    hdc = GetDC(hwnd);
+//                    ParametricLine(hdc, x1, y1, x2, y2, c);
+//                    ReleaseDC(hwnd, hdc);
+                    break;
+                }
 
-                hdc = GetDC(hwnd);
-                MidPointLine(hdc, x1, y1, x2, y2, c);
-                ReleaseDC(hwnd, hdc);
+            //!=========================================================================================================
+
+                default: {
+                    break;
+                }
             }
+
             break;
         }
 
@@ -393,28 +432,38 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 }
 
 int APIENTRY WinMain(HINSTANCE hi, HINSTANCE pi, LPSTR cmd, int nsh) {
+    const char* CLASS_NAME = "2D drawing program";
+
     WNDCLASS wc = {};
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
     wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hIcon = LoadIcon(nullptr, IDI_WINLOGO);
-    wc.lpszClassName = "2D drawing program";
-    wc.lpszMenuName = nullptr;
+    wc.lpszClassName = CLASS_NAME;
     wc.lpfnWndProc = WndProc;
-    wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.hInstance = hi;
-    RegisterClass(&wc);
-    HWND hwnd = CreateWindow("2D drawing program",
-                             "2D drawing program",
-                             WS_OVERLAPPEDWINDOW,
-                             CW_USEDEFAULT, CW_USEDEFAULT,CW_USEDEFAULT,
-                             CW_USEDEFAULT, nullptr, nullptr, hi, nullptr);
+
+    if (!RegisterClass(&wc)) {
+        return -1;
+    }
+
+    HWND hwnd = CreateWindow(
+                CLASS_NAME, CLASS_NAME,
+                WS_OVERLAPPEDWINDOW,
+                CW_USEDEFAULT, CW_USEDEFAULT,
+                CW_USEDEFAULT, CW_USEDEFAULT,
+                nullptr, nullptr, hi, nullptr);
+
+    if (!hwnd) {
+        return -1;
+    }
+
     ShowWindow(hwnd, nsh);
     UpdateWindow(hwnd);
+
     MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0) > 0){
+    while (GetMessage(&msg, nullptr, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+
     return 0;
 }
