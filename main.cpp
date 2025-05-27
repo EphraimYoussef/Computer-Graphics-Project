@@ -51,7 +51,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //*=========================================================================================================
 
-            // TODO:CIRCLE
+            // ! CIRCLE
             // ? command ID -> 42#
             HMENU circleAlgorithms = CreatePopupMenu();
             AppendMenu(circleAlgorithms, MF_STRING, 421, "Direct");
@@ -247,11 +247,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                     break;
                 }
                 case 424: {
-                    // TODO: Midpoint
+                    // ! Midpoint
+                    currentTool = 424;
                     break;
                 }
                 case 425: {
                     // TODO: Modified Midpoint
+                    currentTool = 425;
                     break;
                 }
 
@@ -418,7 +420,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 // ? Circle Algorithms
                 case 421:
                 case 422:
-                case 423:{
+                case 423:
+                case 424:
+                case 425: {
                     x = LOWORD(lp);
                     y = HIWORD(lp);
                     hdc = GetDC(hwnd);
@@ -431,6 +435,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                     }
                     if(currentTool == 423){
                         IterativePolarCircle(hdc, xc, yc, r, c);
+                    }
+                    if(currentTool == 424){
+                        MidPointCircle(hdc, xc, yc, r, c);
+                    }
+                    if(currentTool == 425){
+                        ModifiedMidPointCircle(hdc, xc, yc, r, c);
                     }
                     ReleaseDC(hwnd, hdc);
                     break;
