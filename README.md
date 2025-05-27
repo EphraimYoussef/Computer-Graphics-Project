@@ -54,10 +54,3 @@ This is a 2D drawing application built in **C++** using the **Win32 API (`Window
    - Draw directly on the window canvas.
    - Save/load drawings using the menu.
 
-## Build Instructions
-
-1. Make sure you are on a Windows system with a C++ compiler (e.g., **MSVC**, **g++ (MinGW)**).
-2. Compile using a command like:
-
-   ```bash
-   g++ main.cpp -o DrawingApp.exe -lgdi32
