@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <bits/stdc++.h>
 #include "GraphicsAlgorithms.h"
 
 HBRUSH BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -6,7 +7,10 @@ HBRUSH BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     HDC hdc;
     HMENU mainMenu;
-    static int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
+    static int x1 = 0, y1 = 0,
+               x2 = 0, y2 = 0,
+               xc = 0, yc = 0, r = 0 ,
+               x = 0, y = 0;
     static int currentTool = 0;
     static COLORREF c = RGB(255, 0, 0);
     switch (msg) {
@@ -209,7 +213,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
                 // ? Line
                 case 411: {
-                    // TODO: DDA
+                    // ! DDA
                     currentTool = 411;
                     break;
                 }
@@ -228,15 +232,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
                 // ? Circle
                 case 421: {
-                    // TODO: Direct
+                    // ! Direct
+                    currentTool = 421;
                     break;
                 }
                 case 422: {
-                    // TODO: Polar
+                    // ! Polar
+                    currentTool = 422;
                     break;
                 }
                 case 423: {
-                    // TODO: Iterative Polar
+                    // ! Iterative Polar
+                    currentTool = 423;
                     break;
                 }
                 case 424: {
@@ -360,6 +367,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //!=========================================================================================================
 
+                // ? Circle Algorithms
+                case 421:
+                case 422:
+                case 423:
+                case 424:
+                case 425: {
+                    xc = LOWORD(lp);
+                    yc = HIWORD(lp);
+                    break;
+                }
+
+            //!=========================================================================================================
+
+
+
                 default: {
                     break;
                 }
@@ -370,28 +392,47 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
         case WM_LBUTTONUP: {
             switch (currentTool) {
-                case 411: {
-                    x2 = LOWORD(lp);
-                    y2 = HIWORD(lp);
-                    hdc = GetDC(hwnd);
-                    DDALine(hdc, x1, y1, x2, y2, c);
-                    ReleaseDC(hwnd, hdc);
-                    break;
-                }
-                case 412: {
-                    x2 = LOWORD(lp);
-                    y2 = HIWORD(lp);
-                    hdc = GetDC(hwnd);
-                    MidPointLine(hdc, x1, y1, x2, y2, c);
-                    ReleaseDC(hwnd, hdc);
-                    break;
-                }
+
+                // ? Line Algorithms
+                case 411:
+                case 412:
                 case 413: {
-//                    x2 = LOWORD(lp);
-//                    y2 = HIWORD(lp);
-//                    hdc = GetDC(hwnd);
-//                    ParametricLine(hdc, x1, y1, x2, y2, c);
-//                    ReleaseDC(hwnd, hdc);
+                    x2 = LOWORD(lp);
+                    y2 = HIWORD(lp);
+                    hdc = GetDC(hwnd);
+                    if(currentTool == 411) {
+                        DDALine(hdc, x1, y1, x2, y2, c);
+                    }
+                    if(currentTool == 412){
+                        MidPointLine(hdc, x1, y1, x2, y2, c);
+                    }
+                    if(currentTool == 413){
+//                        ParametricLine(hdc, x1, y1, x2, y2, c);
+                    }
+                    ReleaseDC(hwnd, hdc);
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? Circle Algorithms
+                case 421:
+                case 422:
+                case 423:{
+                    x = LOWORD(lp);
+                    y = HIWORD(lp);
+                    hdc = GetDC(hwnd);
+                    r = (int)round(sqrt((x-xc)*(x-xc) + (y-yc)*(y-yc)));
+                    if(currentTool == 421) {
+                        DirectCircle(hdc, xc, yc, r, c);
+                    }
+                    if(currentTool == 422){
+                        PolarCircle(hdc, xc, yc, r, c);
+                    }
+                    if(currentTool == 423){
+                        IterativePolarCircle(hdc, xc, yc, r, c);
+                    }
+                    ReleaseDC(hwnd, hdc);
                     break;
                 }
 
