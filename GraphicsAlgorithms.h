@@ -26,4 +26,14 @@ void MidPointCircle(HDC hdc, int xc, int yc, int r, COLORREF c);
 
 void ModifiedMidPointCircle(HDC hdc, int xc, int yc, int r, COLORREF c);
 
+//!=========================================================================================================
+
+// ? Ellipse Algorithms
+
+void DirectEllipse(HDC hdc, int xc, int yc, int a, int b, COLORREF c);
+
+void PolarEllipse(HDC hdc, int xc, int yc, int a, int b, COLORREF c);
+
+void MidPointEllipse(HDC hdc, int xc, int yc, int a, int b, COLORREF c);
+
 #endif //PROJECT_GRAPHICS_ALGORITHMS_H

@@ -62,7 +62,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //*=========================================================================================================
 
-            // TODO:ELLIPSE
+            // ! ELLIPSE
             // ? command ID -> 43#
             HMENU ellipseAlgorithms = CreatePopupMenu();
             AppendMenu(ellipseAlgorithms, MF_STRING, 431, "Direct");
@@ -261,15 +261,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
                 // ? Ellipse
                 case 431: {
-                    // TODO: Direct
+                    // ! Direct
+                    currentTool = 431;
                     break;
                 }
                 case 432: {
-                    // TODO: Polar
+                    // ! Polar
+                    currentTool = 432;
                     break;
                 }
                 case 433: {
-                    // TODO: Midpoint
+                    // ! Midpoint
+                    currentTool = 433;
                     break;
                 }
 
@@ -382,7 +385,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //!=========================================================================================================
 
-
+                // ? Ellipse Algorithms
+                case 431:
+                case 432:
+                case 433: {
+                    xc = LOWORD(lp);
+                    yc = HIWORD(lp);
+                    break;
+                }
 
                 default: {
                     break;
@@ -447,6 +457,27 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 }
 
             //!=========================================================================================================
+
+                // ? Ellipse Algorithms
+                case 431:
+                case 432:
+                case 433: {
+                    x = LOWORD(lp);
+                    y = HIWORD(lp);
+                    hdc = GetDC(hwnd);
+                    int a = abs(x - xc), b = abs(y - yc);
+                    if(currentTool == 431) {
+                        DirectEllipse(hdc, xc, yc, a, b, c);
+                    }
+                    if(currentTool == 432){
+                        PolarEllipse(hdc, xc, yc, a, b, c);
+                    }
+                    if(currentTool == 433){
+                        MidPointEllipse(hdc, xc, yc, a, b, c);
+                    }
+                    ReleaseDC(hwnd, hdc);
+                    break;
+                }
 
                 default: {
                     break;
