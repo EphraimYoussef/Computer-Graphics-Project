@@ -42,7 +42,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //!=========================================================================================================
 
-            // TODO:LINE
+            // ! LINE
             // ? command ID -> 41#
             HMENU lineAlgorithms = CreatePopupMenu();
             AppendMenu(lineAlgorithms, MF_STRING, 411, "DDA");
@@ -223,7 +223,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                     break;
                 }
                 case 413: {
-                    // TODO: Parametric
+                    // ! Parametric
                     currentTool = 413;
                     break;
                 }
@@ -252,7 +252,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                     break;
                 }
                 case 425: {
-                    // TODO: Modified Midpoint
+                    // ! Modified Midpoint
                     currentTool = 425;
                     break;
                 }
@@ -409,7 +409,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                         MidPointLine(hdc, x1, y1, x2, y2, c);
                     }
                     if(currentTool == 413){
-//                        ParametricLine(hdc, x1, y1, x2, y2, c);
+                        ParametricLine(hdc, x1, y1, x2, y2, c);
                     }
                     ReleaseDC(hwnd, hdc);
                     break;

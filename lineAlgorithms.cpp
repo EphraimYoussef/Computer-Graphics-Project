@@ -28,7 +28,6 @@ void DDALine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c) {
     }
 }
 
-
 void MidPointLine(HDC hdc, int x1, int y1, int x2, int y2 , COLORREF c) {
     int dx = abs(x2 - x1), dy = abs(y2 - y1);
     int xInc = (x2 >= x1) ? 1 : -1, yInc = (y2 >= y1) ? 1 : -1;
@@ -70,3 +69,14 @@ void MidPointLine(HDC hdc, int x1, int y1, int x2, int y2 , COLORREF c) {
     }
 }
 
+void ParametricLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c) {
+    int dx = x2 - x1, dy = y2 - y1;
+    double x = x1 , y = y1;
+    SetPixel(hdc , x1 , y1 , c);
+    double step = 1.0 / max(abs(dx) ,abs(dy));
+    for( double t = 0 ; t <= 1 ; t += step ) {
+        x = dx * t + x1;
+        y = dy * t + y1;
+        SetPixel(hdc , (int)round(x) , (int)round(y) , c);
+    }
+}
