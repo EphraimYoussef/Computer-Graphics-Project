@@ -11,6 +11,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                x2 = 0, y2 = 0,
                xc = 0, yc = 0, r = 0 ,
                x = 0, y = 0;
+    static vector<POINT> points;
     static int currentTool = 0;
     static COLORREF c = RGB(255, 0, 0);
     switch (msg) {
@@ -215,16 +216,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 case 411: {
                     // ! DDA
                     currentTool = 411;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a DDA Line.", "DDA Line", MB_OK);
                     break;
                 }
                 case 412: {
                     // ! Midpoint
                     currentTool = 412;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Midpoint Line.", "Midpoint Line", MB_OK);
                     break;
                 }
                 case 413: {
                     // ! Parametric
                     currentTool = 413;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Parametric Line.", "Parametric Line", MB_OK);
                     break;
                 }
 
@@ -234,26 +238,31 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 case 421: {
                     // ! Direct
                     currentTool = 421;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Direct Circle.", "Direct Circle", MB_OK);
                     break;
                 }
                 case 422: {
                     // ! Polar
                     currentTool = 422;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Polar Circle.", "Polar Circle", MB_OK);
                     break;
                 }
                 case 423: {
                     // ! Iterative Polar
                     currentTool = 423;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw an Iterative Polar Circle.", "Iterative Polar Circle", MB_OK);
                     break;
                 }
                 case 424: {
                     // ! Midpoint
                     currentTool = 424;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Midpoint Circle.", "Midpoint Circle", MB_OK);
                     break;
                 }
                 case 425: {
                     // ! Modified Midpoint
                     currentTool = 425;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Modified Midpoint Circle.", "Modified Midpoint Circle", MB_OK);
                     break;
                 }
 
@@ -263,16 +272,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 case 431: {
                     // ! Direct
                     currentTool = 431;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Direct Ellipse.", "Direct Ellipse", MB_OK);
                     break;
                 }
                 case 432: {
                     // ! Polar
                     currentTool = 432;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Polar Ellipse.", "Polar Ellipse", MB_OK);
                     break;
                 }
                 case 433: {
                     // ! Midpoint
                     currentTool = 433;
+                    MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Midpoint Ellipse.", "Midpoint Ellipse", MB_OK);
                     break;
                 }
 
@@ -303,7 +315,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                     break;
                 }
                 case 55:{
-                    // TODO: Convex Filling
+                    // ! Convex Filling
+                    MessageBox(hwnd, "Left-click to enter points. When finished, right-click to start Convex Filling.", "Convex Filling", MB_OK);
+                    currentTool = 55;
                     break;
                 }
                 case 56:{
@@ -391,6 +405,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 case 433: {
                     xc = LOWORD(lp);
                     yc = HIWORD(lp);
+                    break;
+                }
+
+            //!=========================================================================================================
+
+                // ? Convex Filling
+                case 55: {
+                    x = LOWORD(lp);
+                    y = HIWORD(lp);
+                    points.push_back({x, y});
                     break;
                 }
 
@@ -487,6 +511,31 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             break;
         }
 
+
+        case WM_RBUTTONDOWN: {
+            switch (currentTool) {
+
+                // ? Convex Filling
+                case 55: {
+                    if(points.size() > 2) {
+                        hdc = GetDC(hwnd);
+                        ConvexFilling(hdc, points, c);
+                        ReleaseDC(hwnd, hdc);
+                        points.clear();
+                    }
+                    else{
+                        MessageBox(hwnd, "At least 3 points are required to fill a convex polygon", "Error", MB_OK);
+                    }
+                    break;
+                }
+
+
+                default: {
+                    break;
+                }
+
+            }
+        }
 
         case WM_ERASEBKGND: {
             hdc = (HDC)wp;
