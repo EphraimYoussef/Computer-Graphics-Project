@@ -19,6 +19,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     static vector<POINT> points;
     static int currentTool = 0;
     static COLORREF c = RGB(255, 0, 0);
+    if(currentTool != 55){
+        points.clear();
+    }
     switch (msg) {
 
         case WM_CREATE: {
@@ -330,11 +333,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                     break;
                 }
                 case 57:{
-                    // TODO: Recursive Flood Fill
+                    // ! Recursive Flood Fill
+                    MessageBox(hwnd , "Click inside the shape to start Recursive Flood Fill.", "Recursive Flood Fill", MB_OK);
+                    currentTool = 57;
                     break;
                 }
                 case 58:{
-                    // TODO: Non-Recursive Flood Fill
+                    // ! Non-Recursive Flood Fill
+                    MessageBox(hwnd , "Click inside the shape to start Non-Recursive Flood Fill.", "Non-Recursive Flood Fill", MB_OK);
+                    currentTool = 58;
                     break;
                 }
 
@@ -420,6 +427,28 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                     x = LOWORD(lp);
                     y = HIWORD(lp);
                     points.push_back({x, y});
+                    break;
+                }
+
+                // ? Recursive Flood Fill
+                case 57: {
+                    x = LOWORD(lp);
+                    y = HIWORD(lp);
+                    hdc = GetDC(hwnd);
+                    COLORREF bgColor = GetPixel(hdc, x, y);
+                    RecursiveFloodFill(hdc, x, y, c, bgColor);
+                    ReleaseDC(hwnd, hdc);
+                    break;
+                }
+
+                // ? Non-Recursive Flood Fill
+                case 58: {
+                    x = LOWORD(lp);
+                    y = HIWORD(lp);
+                    hdc = GetDC(hwnd);
+                    COLORREF bgColor = GetPixel(hdc, x, y);
+                    NonRecursiveFloodFill(hdc, x, y, c, bgColor);
+                    ReleaseDC(hwnd, hdc);
                     break;
                 }
 
@@ -529,7 +558,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                         points.clear();
                     }
                     else{
-                        MessageBox(hwnd, "At least 3 points are required to fill a convex polygon", "Error", MB_OK);
+                        MessageBox(hwnd, "At least 3 points are required to fill a convex polygon, "
+                                         "please try again with new points", "Error", MB_OK);
+                        points.clear();
                     }
                     break;
                 }

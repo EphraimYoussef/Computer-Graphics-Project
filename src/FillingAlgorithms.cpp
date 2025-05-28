@@ -13,14 +13,14 @@ struct Entry{
 
 typedef Entry edgeTable[maxHeight];
 
-void init (edgeTable t){
+void initEdgeTableConvex (edgeTable t){
     for (int i = 0 ; i < maxHeight ; ++i) {
         t[i].xLeft = INT_MAX;
         t[i].xRight = INT_MIN;
     }
 }
 
-void Edge2Table (POINT p1 , POINT p2 , edgeTable t){
+void Edge2TableConvex (POINT p1 , POINT p2 , edgeTable t){
     if(p1.y == p2.y) {
         return;
     }
@@ -44,17 +44,17 @@ void Edge2Table (POINT p1 , POINT p2 , edgeTable t){
     }
 }
 
-void Polygon2Table(vector<POINT>& p,edgeTable t){
+void Polygon2TableConvex(vector<POINT>& p, edgeTable t){
     POINT p1 = p.back();
 
     for (auto i: p) {
         POINT p2 = i;
-        Edge2Table(p1,p2,t);
+        Edge2TableConvex(p1, p2, t);
         p1 = i;
     }
 }
 
-void Table2Screen(HDC hdc , edgeTable t , COLORREF c){
+void Table2ScreenConvex(HDC hdc , edgeTable t , COLORREF c){
     for (int y = 0; y < maxHeight; ++y) {
         if(t[y].xLeft < t[y].xRight) {
             ParametricLine(hdc, (int)(t[y].xLeft), y, (int)(t[y].xRight), y, c);
@@ -64,7 +64,77 @@ void Table2Screen(HDC hdc , edgeTable t , COLORREF c){
 
 void ConvexFilling(HDC hdc , vector<POINT>& p , COLORREF c){
     edgeTable t;
-    init(t);
-    Polygon2Table(p,t);
-    Table2Screen(hdc , t ,c);
+    initEdgeTableConvex(t);
+    Polygon2TableConvex(p, t);
+    Table2ScreenConvex(hdc, t, c);
 }
+
+
+void RecursiveFloodFill(HDC hdc, int x, int y, COLORREF fillColor, COLORREF bgColor) {
+    COLORREF current = GetPixel(hdc, x, y);
+    if (current != bgColor || current == fillColor) {
+        return;
+    }
+    SetPixel(hdc, x, y, fillColor);
+    RecursiveFloodFill(hdc, x + 1, y, fillColor, bgColor);
+    RecursiveFloodFill(hdc, x - 1, y, fillColor, bgColor);
+    RecursiveFloodFill(hdc, x, y + 1, fillColor, bgColor);
+    RecursiveFloodFill(hdc, x, y - 1, fillColor, bgColor);
+}
+
+void NonRecursiveFloodFill(HDC hdc, int x, int y, COLORREF fillColor, COLORREF bgColor) {
+    stack<POINT> stk;
+    stk.push({x, y});
+    while (!stk.empty()){
+        POINT p = stk.top();
+        stk.pop();
+        COLORREF current = GetPixel(hdc,p.x, p.y);
+        if(current != bgColor || current == fillColor) {
+            continue;
+        }
+        SetPixel(hdc, p.x, p.y, fillColor);
+        stk.push({p.x + 1, p.y});
+        stk.push({p.x - 1, p.y});
+        stk.push({p.x, p.y + 1});
+        stk.push({p.x, p.y - 1});
+    }
+}
+
+
+// ? Optimized version
+
+
+//void NonRecursiveFloodFill(HDC hdc, int x, int y, COLORREF fillColor, COLORREF bgColor) {
+//    if (fillColor == bgColor) {
+//        return;
+//    }
+//    stack<POINT> stk;
+//    set<pair<int, int>> visited;
+//
+//    stk.push({x, y});
+//    visited.insert({x, y});
+//
+//    while (!stk.empty()) {
+//        POINT p = stk.top();
+//        stk.pop();
+//        COLORREF current = GetPixel(hdc, p.x, p.y);
+//        if (current != bgColor) {
+//            continue;
+//        }
+//        SetPixel(hdc, p.x, p.y, fillColor);
+//        pair<int, int> neighbors[] = {
+//                {p.x + 1, p.y},
+//                {p.x - 1, p.y},
+//                {p.x, p.y + 1},
+//                {p.x, p.y - 1}
+//        };
+//
+//        for (auto& np : neighbors) {
+//            if (!visited.count(np)) {
+//                stk.push({np.first, np.second});
+//                visited.insert(np);
+//            }
+//        }
+//    }
+//}
+
