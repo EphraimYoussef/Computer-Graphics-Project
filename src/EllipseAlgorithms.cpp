@@ -1,5 +1,6 @@
-#include <Windows.h>
+#include <windows.h>
 #include <bits/stdc++.h>
+#include "../include/EllipseAlgorithms.h"
 
 using namespace std;
 

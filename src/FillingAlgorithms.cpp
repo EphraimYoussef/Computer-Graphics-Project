@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <bits/stdc++.h>
-#include "GraphicsAlgorithms.h"
+#include "../include/FillingAlgorithms.h"
+#include "../include/LineAlgorithms.h"
 
 using namespace std;
 

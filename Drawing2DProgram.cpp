@@ -1,6 +1,11 @@
 #include <Windows.h>
 #include <bits/stdc++.h>
-#include "GraphicsAlgorithms.h"
+#include "./include/LineAlgorithms.h"
+#include "./include/CircleAlgorithms.h"
+#include "./include/EllipseAlgorithms.h"
+#include "./include/FillingAlgorithms.h"
+#include "./include/ClippingAlgorithms.h"
+#include "./include/CurvesAlgorithms.h"
 
 HBRUSH BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
 
