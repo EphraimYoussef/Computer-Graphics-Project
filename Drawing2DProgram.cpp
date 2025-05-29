@@ -1,11 +1,15 @@
 #include <Windows.h>
 #include <bits/stdc++.h>
+#include "Constants.h"
 #include "./include/LineAlgorithms.h"
 #include "./include/CircleAlgorithms.h"
 #include "./include/EllipseAlgorithms.h"
 #include "./include/FillingAlgorithms.h"
 #include "./include/ClippingAlgorithms.h"
 #include "./include/CurvesAlgorithms.h"
+
+using namespace std;
+using namespace Constants;
 
 HBRUSH BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
 
@@ -19,7 +23,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     static vector<POINT> points;
     static int currentTool = 0;
     static COLORREF c = RGB(255, 0, 0);
-    if(currentTool != 55){
+    if(currentTool != FILL_CONVEX){
         points.clear();
     }
     switch (msg) {
@@ -27,97 +31,88 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
         case WM_CREATE: {
 
             // ! BG_COLOR
-            // ? command ID -> 1#
             HMENU BGColor = CreatePopupMenu();
-            AppendMenu(BGColor, MF_STRING, 11, "White");
-            AppendMenu(BGColor, MF_STRING, 12, "Black");
+            AppendMenu(BGColor, MF_STRING, BG_WHITE, "White");
+            AppendMenu(BGColor, MF_STRING, BG_BLACK, "Black");
 
             //!=========================================================================================================
 
             // ! CURSOR_Change
-            // ? command ID -> 2#
             HMENU Cursor = CreatePopupMenu();
-            AppendMenu(Cursor, MF_STRING, 21, "Arrow");
-            AppendMenu(Cursor, MF_STRING, 22, "Cross");
+            AppendMenu(Cursor, MF_STRING, CURSOR_ARROW, "Arrow");
+            AppendMenu(Cursor, MF_STRING, CURSOR_CROSS, "Cross");
 
             //!=========================================================================================================
 
             // ! SHAPE_COLOR
-            // ? command ID -> 3#
             HMENU ShapeColor = CreatePopupMenu();
-            AppendMenu(ShapeColor, MF_STRING, 31, "Red");
-            AppendMenu(ShapeColor, MF_STRING, 32, "Green");
-            AppendMenu(ShapeColor, MF_STRING, 33, "Blue");
+            AppendMenu(ShapeColor, MF_STRING, SHAPE_RED, "Red");
+            AppendMenu(ShapeColor, MF_STRING, SHAPE_GREEN, "Green");
+            AppendMenu(ShapeColor, MF_STRING, SHAPE_BLUE, "Blue");
 
             //!=========================================================================================================
 
             // ! LINE
             // ? command ID -> 41#
             HMENU lineAlgorithms = CreatePopupMenu();
-            AppendMenu(lineAlgorithms, MF_STRING, 411, "DDA");
-            AppendMenu(lineAlgorithms, MF_STRING, 412, "Mid point");
-            AppendMenu(lineAlgorithms, MF_STRING, 413, "Parametric");
+            AppendMenu(lineAlgorithms, MF_STRING, LINE_DDA, "DDA");
+            AppendMenu(lineAlgorithms, MF_STRING, LINE_MID_POINT, "Mid point");
+            AppendMenu(lineAlgorithms, MF_STRING, LINE_PARAMETRIC, "Parametric");
 
             //*=========================================================================================================
 
             // ! CIRCLE
-            // ? command ID -> 42#
             HMENU circleAlgorithms = CreatePopupMenu();
-            AppendMenu(circleAlgorithms, MF_STRING, 421, "Direct");
-            AppendMenu(circleAlgorithms, MF_STRING, 422, "Polar");
-            AppendMenu(circleAlgorithms, MF_STRING, 423, "Iterative Polar");
-            AppendMenu(circleAlgorithms, MF_STRING, 424, "Mid point");
-            AppendMenu(circleAlgorithms, MF_STRING, 425, "Modified Mid point");
+            AppendMenu(circleAlgorithms, MF_STRING, CIRCLE_DIRECT, "Direct");
+            AppendMenu(circleAlgorithms, MF_STRING, CIRCLE_POLAR, "Polar");
+            AppendMenu(circleAlgorithms, MF_STRING, CIRCLE_ITERATIVE_POLAR, "Iterative Polar");
+            AppendMenu(circleAlgorithms, MF_STRING, CIRCLE_MID_POINT, "Mid point");
+            AppendMenu(circleAlgorithms, MF_STRING, CIRCLE_MODIFIED_MID_POINT, "Modified Mid point");
 
             //*=========================================================================================================
 
             // ! ELLIPSE
-            // ? command ID -> 43#
             HMENU ellipseAlgorithms = CreatePopupMenu();
-            AppendMenu(ellipseAlgorithms, MF_STRING, 431, "Direct");
-            AppendMenu(ellipseAlgorithms, MF_STRING, 432, "Polar");
-            AppendMenu(ellipseAlgorithms, MF_STRING, 433, "Mid point");
+            AppendMenu(ellipseAlgorithms, MF_STRING, ELLIPSE_DIRECT, "Direct");
+            AppendMenu(ellipseAlgorithms, MF_STRING, ELLIPSE_POLAR, "Polar");
+            AppendMenu(ellipseAlgorithms, MF_STRING, ELLIPSE_MID_POINT, "Mid point");
 
             //*=========================================================================================================
 
             // TODO:SHAPE_MENU
-            // ? command ID -> 4#
             HMENU Shape = CreatePopupMenu();
             AppendMenu(Shape, MF_POPUP, (UINT_PTR)lineAlgorithms , "Line");
             AppendMenu(Shape, MF_POPUP, (UINT_PTR)circleAlgorithms, "Circle");
             AppendMenu(Shape, MF_POPUP, (UINT_PTR)ellipseAlgorithms, "Ellipse");
-            AppendMenu(Shape, MF_STRING, 44, "Cardinal Spline Curve");
+            AppendMenu(Shape, MF_STRING, CARDINAL_SPLINE, "Cardinal Spline Curve");
 
             //!=========================================================================================================
 
             // TODO:FILLING
-            // ? command ID -> 5#
             HMENU Filling = CreatePopupMenu();
-            AppendMenu(Filling, MF_STRING, 51, "Filling Circle with lines");
-            AppendMenu(Filling, MF_STRING, 52, "Filling Circle with circles");
-            AppendMenu(Filling, MF_STRING, 53, "Filling Square with Hermit [Vertical]");
-            AppendMenu(Filling, MF_STRING, 54, "Filling Rectangle with Bezier [horizontal]");
-            AppendMenu(Filling, MF_STRING, 55, "Convex Filling");
-            AppendMenu(Filling, MF_STRING, 56, "Non Convex Filling");
-            AppendMenu(Filling, MF_STRING, 57, "Recursive Flood Fill");
-            AppendMenu(Filling, MF_STRING, 58, "Non Recursive Flood Fill");
+            AppendMenu(Filling, MF_STRING, FILL_CIRCLE_LINES, "Filling Circle with lines");
+            AppendMenu(Filling, MF_STRING, FILL_CIRCLE_CIRCLES, "Filling Circle with circles");
+            AppendMenu(Filling, MF_STRING, FILL_SQUARE_HERMITE_V, "Filling Square with Hermit [Vertical]");
+            AppendMenu(Filling, MF_STRING, FILL_RECT_BEZIER_H, "Filling Rectangle with Bezier [horizontal]");
+            AppendMenu(Filling, MF_STRING, FILL_CONVEX, "Convex Filling");
+            AppendMenu(Filling, MF_STRING, FILL_NON_CONVEX, "Non Convex Filling");
+            AppendMenu(Filling, MF_STRING, FILL_RECURSIVE, "Recursive Flood Fill");
+            AppendMenu(Filling, MF_STRING, FILL_NON_RECURSIVE, "Non Recursive Flood Fill");
 
             //!=========================================================================================================
 
             // TODO:CLIPPING_RECTANGLE
-            // ? command ID -> 61#
             HMENU clippingRect = CreatePopupMenu();
-            AppendMenu(clippingRect, MF_STRING, 611, "Point");
-            AppendMenu(clippingRect, MF_STRING, 612, "Line");
-            AppendMenu(clippingRect, MF_STRING, 613, "Polygon");
+            AppendMenu(clippingRect, MF_STRING, CLIP_RECT_POINT, "Point");
+            AppendMenu(clippingRect, MF_STRING, CLIP_RECT_LINE, "Line");
+            AppendMenu(clippingRect, MF_STRING, CLIP_RECT_POLYGON, "Polygon");
 
             //*=========================================================================================================
 
             // TODO:CLIPPING_SQUARE
-            // ? command ID -> 62#
             HMENU clippingSquare = CreatePopupMenu();
-            AppendMenu(clippingSquare, MF_STRING, 621, "Point");
-            AppendMenu(clippingSquare, MF_STRING, 622, "Line");
+            AppendMenu(clippingSquare, MF_STRING, CLIP_SQR_POINT, "Point");
+            AppendMenu(clippingSquare, MF_STRING, CLIP_SQR_LINE, "Line");
 
             //*=========================================================================================================
 
@@ -130,7 +125,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
             // TODO:MAIN_MENU
-            // ? command ID -> 10#
             mainMenu = CreateMenu();
             AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)BGColor, "Background Color");
             AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)Cursor, "Cursor");
@@ -138,9 +132,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)Shape, "Choose Shape");
             AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)Filling, "Filling");
             AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)clipping, "Clipping");
-            AppendMenu(mainMenu, MF_STRING, 101, "Clear");
-            AppendMenu(mainMenu, MF_STRING, 102, "Save");
-            AppendMenu(mainMenu, MF_STRING, 103, "Load");
+            AppendMenu(mainMenu, MF_STRING, CLEAR, "Clear");
+            AppendMenu(mainMenu, MF_STRING, SAVE, "Save");
+            AppendMenu(mainMenu, MF_STRING, LOAD, "Load");
 
             SetMenu(hwnd, mainMenu);
             break;
@@ -153,15 +147,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             switch (LOWORD(wp)) {
 
                 // ? MAIN_MENU
-                case 101: {
+                case CLEAR: {
                     // TODO: CLEAR
                     break;
                 }
-                case 102 : {
+                case SAVE : {
                     // TODO: SAVE
                     break;
                 }
-                case 103 : {
+                case LOAD : {
                     // TODO: LOAD
                     break;
                 }
@@ -169,13 +163,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? BG_COLOR
-                case 11: {
+                case BG_WHITE: {
                     // ! BG_COLOR_WHITE
                     BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
                     InvalidateRect(hwnd, nullptr, TRUE);
                     break;
                 }
-                case 12: {
+                case BG_BLACK: {
                     // ! BG_COLOR_BLACK
                     BGBrush = (HBRUSH)GetStockObject(BLACK_BRUSH);
                     InvalidateRect(hwnd, nullptr, TRUE);
@@ -184,14 +178,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
             //!=========================================================================================================
 
-                case 21: {
+                case CURSOR_ARROW: {
                     // ! CURSOR_ARROW
                     HCURSOR hCursor = LoadCursor(nullptr, IDC_ARROW);
                     SetClassLongPtr(hwnd, GCLP_HCURSOR, (LONG_PTR)hCursor);
                     SetCursor(hCursor);
                     break;
                 }
-                case 22: {
+                case CURSOR_CROSS: {
                     // ! CURSOR_CROSS
                     HCURSOR hCursor = LoadCursor(nullptr, IDC_CROSS);
                     SetClassLongPtr(hwnd, GCLP_HCURSOR, (LONG_PTR)hCursor);
@@ -202,17 +196,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? SHAPE_COLOR
-                case 31: {
+                case SHAPE_RED: {
                     // ! SHAPE_COLOR_RED
                     c = RGB(255, 0, 0);
                     break;
                 }
-                case 32: {
+                case SHAPE_GREEN: {
                     // ! SHAPE_COLOR_GREEN
                     c = RGB(0, 255, 0);
                     break;
                 }
-                case 33: {
+                case SHAPE_BLUE: {
                     // ! SHAPE_COLOR_BLUE
                     c = RGB(0, 0, 255);
                     break;
@@ -221,21 +215,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Line
-                case 411: {
+                case LINE_DDA: {
                     // ! DDA
-                    currentTool = 411;
+                    currentTool = LINE_DDA;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a DDA Line.", "DDA Line", MB_OK);
                     break;
                 }
-                case 412: {
+                case LINE_MID_POINT: {
                     // ! Midpoint
-                    currentTool = 412;
+                    currentTool = LINE_MID_POINT;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Midpoint Line.", "Midpoint Line", MB_OK);
                     break;
                 }
-                case 413: {
+                case LINE_PARAMETRIC: {
                     // ! Parametric
-                    currentTool = 413;
+                    currentTool = LINE_PARAMETRIC;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Parametric Line.", "Parametric Line", MB_OK);
                     break;
                 }
@@ -243,33 +237,33 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Circle
-                case 421: {
+                case CIRCLE_DIRECT: {
                     // ! Direct
-                    currentTool = 421;
+                    currentTool = CIRCLE_DIRECT;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Direct Circle.", "Direct Circle", MB_OK);
                     break;
                 }
-                case 422: {
+                case CIRCLE_POLAR: {
                     // ! Polar
-                    currentTool = 422;
+                    currentTool = CIRCLE_POLAR;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Polar Circle.", "Polar Circle", MB_OK);
                     break;
                 }
-                case 423: {
+                case CIRCLE_ITERATIVE_POLAR: {
                     // ! Iterative Polar
-                    currentTool = 423;
+                    currentTool = CIRCLE_ITERATIVE_POLAR;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw an Iterative Polar Circle.", "Iterative Polar Circle", MB_OK);
                     break;
                 }
-                case 424: {
+                case CIRCLE_MID_POINT: {
                     // ! Midpoint
-                    currentTool = 424;
+                    currentTool = CIRCLE_MID_POINT;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Midpoint Circle.", "Midpoint Circle", MB_OK);
                     break;
                 }
-                case 425: {
+                case CIRCLE_MODIFIED_MID_POINT: {
                     // ! Modified Midpoint
-                    currentTool = 425;
+                    currentTool = CIRCLE_MODIFIED_MID_POINT;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Modified Midpoint Circle.", "Modified Midpoint Circle", MB_OK);
                     break;
                 }
@@ -277,28 +271,28 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Ellipse
-                case 431: {
+                case ELLIPSE_DIRECT: {
                     // ! Direct
-                    currentTool = 431;
+                    currentTool = ELLIPSE_DIRECT;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Direct Ellipse.", "Direct Ellipse", MB_OK);
                     break;
                 }
-                case 432: {
+                case ELLIPSE_POLAR: {
                     // ! Polar
-                    currentTool = 432;
+                    currentTool = ELLIPSE_POLAR;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Polar Ellipse.", "Polar Ellipse", MB_OK);
                     break;
                 }
-                case 433: {
+                case ELLIPSE_MID_POINT: {
                     // ! Midpoint
-                    currentTool = 433;
+                    currentTool = ELLIPSE_MID_POINT;
                     MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Midpoint Ellipse.", "Midpoint Ellipse", MB_OK);
                     break;
                 }
 
             //!=========================================================================================================
 
-                case 44:{
+                case CARDINAL_SPLINE:{
                     // TODO: Cardinal_Spline_Curve
                     break;
                 }
@@ -306,57 +300,57 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Filling
-                case 51: {
+                case FILL_CIRCLE_LINES: {
                     // TODO: Filling Circle with lines
                     break;
                 }
-                case 52: {
+                case FILL_CIRCLE_CIRCLES: {
                     // TODO: Filling Circle with circles
                     break;
                 }
-                case 53: {
+                case FILL_SQUARE_HERMITE_V: {
                     // TODO: Filling Square with Hermit [Vertical]
                     break;
                 }
-                case 54: {
+                case FILL_RECT_BEZIER_H: {
                     // TODO: Filling Rectangle with Bezier [horizontal]
                     break;
                 }
-                case 55:{
+                case FILL_CONVEX:{
                     // ! Convex Filling
                     MessageBox(hwnd, "Left-click to enter points. When finished, right-click to start Convex Filling.", "Convex Filling", MB_OK);
-                    currentTool = 55;
+                    currentTool = FILL_CONVEX;
                     break;
                 }
-                case 56:{
+                case FILL_NON_CONVEX:{
                     // TODO: Non-Convex Filling
                     break;
                 }
-                case 57:{
+                case FILL_RECURSIVE:{
                     // ! Recursive Flood Fill
                     MessageBox(hwnd , "Click inside the shape to start Recursive Flood Fill.", "Recursive Flood Fill", MB_OK);
-                    currentTool = 57;
+                    currentTool = FILL_RECURSIVE;
                     break;
                 }
-                case 58:{
+                case FILL_NON_RECURSIVE:{
                     // ! Non-Recursive Flood Fill
                     MessageBox(hwnd , "Click inside the shape to start Non-Recursive Flood Fill.", "Non-Recursive Flood Fill", MB_OK);
-                    currentTool = 58;
+                    currentTool = FILL_NON_RECURSIVE;
                     break;
                 }
 
             //!=========================================================================================================
 
                 // ? CLIPPING RECTANGLE
-                case 611:{
+                case CLIP_RECT_POINT:{
                     // TODO: CLIPPING RECTANGLE POINT
                     break;
                 }
-                case 612:{
+                case CLIP_RECT_LINE:{
                     // TODO: CLIPPING RECTANGLE LINE
                     break;
                 }
-                case 613:{
+                case CLIP_RECT_POLYGON:{
                     // TODO: CLIPPING RECTANGLE POLYGON
                     break;
                 }
@@ -364,11 +358,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? CLIPPING SQUARE
-                case 621:{
+                case CLIP_SQR_POINT:{
                     // TODO: CLIPPING SQUARE POINT
                     break;
                 }
-                case 622:{
+                case CLIP_SQR_LINE:{
                     // TODO: CLIPPING SQUARE LINE
                     break;
                 }
@@ -388,9 +382,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             switch (currentTool) {
 
                 // ? Line Algorithms
-                case 411:
-                case 412:
-                case 413: {
+                case LINE_DDA:
+                case LINE_MID_POINT:
+                case LINE_PARAMETRIC: {
                     x1 = LOWORD(lp);
                     y1 = HIWORD(lp);
                     break;
@@ -399,11 +393,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Circle Algorithms
-                case 421:
-                case 422:
-                case 423:
-                case 424:
-                case 425: {
+                case CIRCLE_DIRECT:
+                case CIRCLE_POLAR:
+                case CIRCLE_ITERATIVE_POLAR:
+                case CIRCLE_MID_POINT:
+                case CIRCLE_MODIFIED_MID_POINT: {
                     xc = LOWORD(lp);
                     yc = HIWORD(lp);
                     break;
@@ -412,9 +406,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Ellipse Algorithms
-                case 431:
-                case 432:
-                case 433: {
+                case ELLIPSE_DIRECT:
+                case ELLIPSE_POLAR:
+                case ELLIPSE_MID_POINT: {
                     xc = LOWORD(lp);
                     yc = HIWORD(lp);
                     break;
@@ -423,7 +417,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Convex Filling
-                case 55: {
+                case FILL_CONVEX: {
                     x = LOWORD(lp);
                     y = HIWORD(lp);
                     points.push_back({x, y});
@@ -431,7 +425,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 }
 
                 // ? Recursive Flood Fill
-                case 57: {
+                case FILL_RECURSIVE: {
                     x = LOWORD(lp);
                     y = HIWORD(lp);
                     hdc = GetDC(hwnd);
@@ -442,7 +436,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 }
 
                 // ? Non-Recursive Flood Fill
-                case 58: {
+                case FILL_NON_RECURSIVE: {
                     x = LOWORD(lp);
                     y = HIWORD(lp);
                     hdc = GetDC(hwnd);
@@ -464,19 +458,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             switch (currentTool) {
 
                 // ? Line Algorithms
-                case 411:
-                case 412:
-                case 413: {
+                case LINE_DDA:
+                case LINE_MID_POINT:
+                case LINE_PARAMETRIC: {
                     x2 = LOWORD(lp);
                     y2 = HIWORD(lp);
                     hdc = GetDC(hwnd);
-                    if(currentTool == 411) {
+                    if(currentTool == LINE_DDA) {
                         DDALine(hdc, x1, y1, x2, y2, c);
                     }
-                    if(currentTool == 412){
+                    if(currentTool == LINE_MID_POINT){
                         MidPointLine(hdc, x1, y1, x2, y2, c);
                     }
-                    if(currentTool == 413){
+                    if(currentTool == LINE_PARAMETRIC){
                         ParametricLine(hdc, x1, y1, x2, y2, c);
                     }
                     ReleaseDC(hwnd, hdc);
@@ -486,28 +480,28 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Circle Algorithms
-                case 421:
-                case 422:
-                case 423:
-                case 424:
-                case 425: {
+                case CIRCLE_DIRECT:
+                case CIRCLE_POLAR:
+                case CIRCLE_ITERATIVE_POLAR:
+                case CIRCLE_MID_POINT:
+                case CIRCLE_MODIFIED_MID_POINT: {
                     x = LOWORD(lp);
                     y = HIWORD(lp);
                     hdc = GetDC(hwnd);
                     r = (int)round(sqrt((x-xc)*(x-xc) + (y-yc)*(y-yc)));
-                    if(currentTool == 421) {
+                    if(currentTool == CIRCLE_DIRECT) {
                         DirectCircle(hdc, xc, yc, r, c);
                     }
-                    if(currentTool == 422){
+                    if(currentTool == CIRCLE_POLAR){
                         PolarCircle(hdc, xc, yc, r, c);
                     }
-                    if(currentTool == 423){
+                    if(currentTool == CIRCLE_ITERATIVE_POLAR){
                         IterativePolarCircle(hdc, xc, yc, r, c);
                     }
-                    if(currentTool == 424){
+                    if(currentTool == CIRCLE_MID_POINT){
                         MidPointCircle(hdc, xc, yc, r, c);
                     }
-                    if(currentTool == 425){
+                    if(currentTool == CIRCLE_MODIFIED_MID_POINT){
                         ModifiedMidPointCircle(hdc, xc, yc, r, c);
                     }
                     ReleaseDC(hwnd, hdc);
@@ -517,20 +511,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             //!=========================================================================================================
 
                 // ? Ellipse Algorithms
-                case 431:
-                case 432:
-                case 433: {
+                case ELLIPSE_DIRECT:
+                case ELLIPSE_POLAR:
+                case ELLIPSE_MID_POINT: {
                     x = LOWORD(lp);
                     y = HIWORD(lp);
                     hdc = GetDC(hwnd);
                     int a = abs(x - xc), b = abs(y - yc);
-                    if(currentTool == 431) {
+                    if(currentTool == ELLIPSE_DIRECT) {
                         DirectEllipse(hdc, xc, yc, a, b, c);
                     }
-                    if(currentTool == 432){
+                    if(currentTool == ELLIPSE_POLAR){
                         PolarEllipse(hdc, xc, yc, a, b, c);
                     }
-                    if(currentTool == 433){
+                    if(currentTool == ELLIPSE_MID_POINT){
                         MidPointEllipse(hdc, xc, yc, a, b, c);
                     }
                     ReleaseDC(hwnd, hdc);
@@ -550,7 +544,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             switch (currentTool) {
 
                 // ? Convex Filling
-                case 55: {
+                case FILL_CONVEX: {
                     if(points.size() > 2) {
                         hdc = GetDC(hwnd);
                         ConvexFilling(hdc, points, c);
