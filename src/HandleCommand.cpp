@@ -12,7 +12,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
     static HBRUSH &BGBrush = state.BGBrush;
     static int &x1 = state.x1 , &y1 = state.y1, &x2 = state.x2, &y2 = state.y2 , &x = state.x, &y = state.y;
     static int &xc = state.xc, &yc = state.yc, &r = state.r, &a = state.a, &b = state.b;
-    static vector<POINT>& points = state.points;
+    static vector<POINT>& convexPoints = state.convexPoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
 
@@ -32,7 +32,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? BG_COLOR
         case BG_WHITE: {
@@ -48,7 +48,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
         case CURSOR_ARROW: {
             // ! CURSOR_ARROW
@@ -65,7 +65,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? SHAPE_COLOR
         case SHAPE_RED: {
@@ -84,7 +84,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? Line
         case LINE_DDA: {
@@ -106,7 +106,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? Circle
         case CIRCLE_DIRECT: {
@@ -140,7 +140,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? Ellipse
         case ELLIPSE_DIRECT: {
@@ -162,14 +162,14 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
         case CARDINAL_SPLINE:{
             // TODO: Cardinal_Spline_Curve
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? Filling
         case FILL_CIRCLE_LINES: {
@@ -190,7 +190,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
         }
         case FILL_CONVEX:{
             // ! Convex Filling
-            MessageBox(hwnd, "Left-click to enter points. When finished, right-click to start Convex Filling.", "Convex Filling", MB_OK);
+            MessageBox(hwnd, "Left-click to enter convexPoints. When finished, right-click to start Convex Filling.", "Convex Filling", MB_OK);
             currentTool = FILL_CONVEX;
             break;
         }
@@ -211,7 +211,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? CLIPPING RECTANGLE
         case CLIP_RECT_POINT:{
@@ -227,7 +227,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
             // ? CLIPPING SQUARE
         case CLIP_SQR_POINT:{
@@ -239,7 +239,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
 
-            //!=========================================================================================================
+        //!=============================================================================================================
 
         default:{
             break;
