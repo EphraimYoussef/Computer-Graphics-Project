@@ -6,21 +6,21 @@ using namespace Constants;
 
 HMENU CreateMainMenu() {
 
-    // ! BG_COLOR
+    // ? BG_COLOR
     HMENU BGColor = CreatePopupMenu();
     AppendMenu(BGColor, MF_STRING, BG_WHITE, "White");
     AppendMenu(BGColor, MF_STRING, BG_BLACK, "Black");
 
     //!=========================================================================================================
 
-    // ! CURSOR_Change
+    // ? CURSOR_Change
     HMENU Cursor = CreatePopupMenu();
     AppendMenu(Cursor, MF_STRING, CURSOR_ARROW, "Arrow");
     AppendMenu(Cursor, MF_STRING, CURSOR_CROSS, "Cross");
 
     //!=========================================================================================================
 
-    // ! SHAPE_COLOR
+    // ? SHAPE_COLOR
     HMENU ShapeColor = CreatePopupMenu();
     AppendMenu(ShapeColor, MF_STRING, SHAPE_RED, "Red");
     AppendMenu(ShapeColor, MF_STRING, SHAPE_GREEN, "Green");
@@ -28,8 +28,7 @@ HMENU CreateMainMenu() {
 
     //!=========================================================================================================
 
-    // ! LINE
-    // ? command ID -> 41#
+    // ? LINE
     HMENU lineAlgorithms = CreatePopupMenu();
     AppendMenu(lineAlgorithms, MF_STRING, LINE_DDA, "DDA");
     AppendMenu(lineAlgorithms, MF_STRING, LINE_MID_POINT, "Mid point");
@@ -37,7 +36,7 @@ HMENU CreateMainMenu() {
 
     //*=========================================================================================================
 
-    // ! CIRCLE
+    // ? CIRCLE
     HMENU circleAlgorithms = CreatePopupMenu();
     AppendMenu(circleAlgorithms, MF_STRING, CIRCLE_DIRECT, "Direct");
     AppendMenu(circleAlgorithms, MF_STRING, CIRCLE_POLAR, "Polar");
@@ -47,7 +46,7 @@ HMENU CreateMainMenu() {
 
     //*=========================================================================================================
 
-    // ! ELLIPSE
+    // ? ELLIPSE
     HMENU ellipseAlgorithms = CreatePopupMenu();
     AppendMenu(ellipseAlgorithms, MF_STRING, ELLIPSE_DIRECT, "Direct");
     AppendMenu(ellipseAlgorithms, MF_STRING, ELLIPSE_POLAR, "Polar");
@@ -55,7 +54,7 @@ HMENU CreateMainMenu() {
 
     //*=========================================================================================================
 
-    // TODO:SHAPE_MENU
+    // ? SHAPE_MENU
     HMENU Shape = CreatePopupMenu();
     AppendMenu(Shape, MF_POPUP, (UINT_PTR)lineAlgorithms , "Line");
     AppendMenu(Shape, MF_POPUP, (UINT_PTR)circleAlgorithms, "Circle");
@@ -64,7 +63,7 @@ HMENU CreateMainMenu() {
 
     //!=========================================================================================================
 
-    // TODO:FILLING
+    // ? FILLING
     HMENU Filling = CreatePopupMenu();
     AppendMenu(Filling, MF_STRING, FILL_CIRCLE_LINES, "Filling Circle with lines");
     AppendMenu(Filling, MF_STRING, FILL_CIRCLE_CIRCLES, "Filling Circle with circles");
@@ -77,7 +76,7 @@ HMENU CreateMainMenu() {
 
     //!=========================================================================================================
 
-    // TODO:CLIPPING_RECTANGLE
+    // ? CLIPPING_RECTANGLE
     HMENU clippingRect = CreatePopupMenu();
     AppendMenu(clippingRect, MF_STRING, CLIP_RECT_POINT, "Point");
     AppendMenu(clippingRect, MF_STRING, CLIP_RECT_LINE, "Line");
@@ -85,22 +84,21 @@ HMENU CreateMainMenu() {
 
     //*=========================================================================================================
 
-    // TODO:CLIPPING_SQUARE
+    // ? CLIPPING_SQUARE
     HMENU clippingSquare = CreatePopupMenu();
     AppendMenu(clippingSquare, MF_STRING, CLIP_SQR_POINT, "Point");
     AppendMenu(clippingSquare, MF_STRING, CLIP_SQR_LINE, "Line");
 
     //*=========================================================================================================
 
-    // TODO:CLIPPING
-    // ? command ID -> 6#
+    // ? CLIPPING
     HMENU clipping = CreatePopupMenu();
     AppendMenu(clipping, MF_POPUP, (UINT_PTR)clippingRect, "Clipping algorithms using Rectangle");
     AppendMenu(clipping, MF_POPUP, (UINT_PTR)clippingSquare, "Clipping algorithms using Square");
 
     //!=========================================================================================================
 
-    // TODO:MAIN_MENU
+    // ? MAIN_MENU
     HMENU mainMenu = CreateMenu();
     AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)BGColor, "Background Color");
     AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)Cursor, "Cursor");
