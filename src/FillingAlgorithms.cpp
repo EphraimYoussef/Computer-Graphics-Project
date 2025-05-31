@@ -11,16 +11,16 @@ struct Entry{
     double xLeft , xRight;
 };
 
-typedef Entry edgeTable[maxHeight];
+typedef Entry edgeTableConvex[maxHeight];
 
-void initEdgeTableConvex (edgeTable t){
+void initEdgeTableConvex (edgeTableConvex t){
     for (int i = 0 ; i < maxHeight ; ++i) {
         t[i].xLeft = INT_MAX;
         t[i].xRight = INT_MIN;
     }
 }
 
-void Edge2TableConvex (POINT p1 , POINT p2 , edgeTable t){
+void Edge2TableConvex (POINT p1 , POINT p2 , edgeTableConvex t){
     if(p1.y == p2.y) {
         return;
     }
@@ -44,7 +44,7 @@ void Edge2TableConvex (POINT p1 , POINT p2 , edgeTable t){
     }
 }
 
-void Polygon2TableConvex(vector<POINT>& p, edgeTable t){
+void Polygon2TableConvex(vector<POINT>& p, edgeTableConvex t){
     POINT p1 = p.back();
 
     for (auto i: p) {
@@ -54,7 +54,7 @@ void Polygon2TableConvex(vector<POINT>& p, edgeTable t){
     }
 }
 
-void Table2ScreenConvex(HDC hdc , edgeTable t , COLORREF c){
+void Table2ScreenConvex(HDC hdc , edgeTableConvex t , COLORREF c){
     for (int y = 0; y < maxHeight; ++y) {
         if(t[y].xLeft < t[y].xRight) {
             ParametricLine(hdc, (int)(t[y].xLeft), y, (int)(t[y].xRight), y, c);
@@ -63,11 +63,101 @@ void Table2ScreenConvex(HDC hdc , edgeTable t , COLORREF c){
 }
 
 void ConvexFilling(HDC hdc , vector<POINT>& p , COLORREF c){
-    edgeTable t;
+    edgeTableConvex t;
     initEdgeTableConvex(t);
     Polygon2TableConvex(p, t);
     Table2ScreenConvex(hdc, t, c);
 }
+
+
+//!=============================================================================================
+
+struct node {
+    double x,mInv;
+    int yMax;
+    node(double x, int yMax, double mInv) : x(x), mInv(mInv), yMax(yMax) {}
+};
+
+bool operator < (const node& a, const node& b) {
+    return a.x < b.x;
+}
+
+typedef list<node> LinkedList;
+
+typedef LinkedList edgeTableNonConvex[maxHeight];
+
+
+void edg2TableNonConvex(POINT p1, POINT p2, edgeTableNonConvex t) {
+    if(p1.y == p2.y){
+        return;
+    }
+    if(p1.y > p2.y){
+        swap(p1,p2);
+    }
+    double mInv = double(p2.x - p1.x) / (p2.y - p1.y);
+    t[p1.y].emplace_back(p1.x,p2.y, mInv);
+}
+
+void polygon2tableNonConvex(vector<POINT>& p, edgeTableNonConvex t) {
+    POINT p1 = p.back();
+    for (auto i : p) {
+        POINT p2 = i;
+        edg2TableNonConvex(p1, p2, t);
+        p1 = i;
+    }
+}
+
+void NonConvexFilling(HDC hdc, vector<POINT>& p, COLORREF c) {
+    edgeTableNonConvex t;
+    polygon2tableNonConvex(p, t);
+    int y = 0;
+    while(t[y].empty()){
+        y++;
+    }
+    LinkedList active = t[y];
+    while(!active.empty()){
+
+        // ? sort by x  ------> 1
+        active.sort();
+
+        // ? for every 2 nodes in active draw a line -------> 2
+        auto itt = active.begin();
+        while (itt != active.end()) {
+            node n1 = *itt++;
+            if (itt == active.end()) {
+                break;
+            }
+            node n2 = *itt++;
+            DDALine(hdc, (int)ceil(n1.x), y, (int)floor(n2.x), y, c);
+        }
+
+        // ? update y
+        y++;
+
+        // ? for any node we reached yMax remove it ------> 3
+        for (auto it = active.begin(); it != active.end(); ) {
+            if (it->yMax == y) {
+                it = active.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+
+        // ? update x for every node ------> 4
+        for(auto & i : active){
+            i.x += i.mInv;
+        }
+
+        // ? if t[y] is not empty add to active ------> 5
+        if(!t[y].empty()){
+            active.insert(active.end(), t[y].begin(), t[y].end());
+        }
+    }
+}
+
+
+//!=============================================================================================
 
 
 void RecursiveFloodFill(HDC hdc, int x, int y, COLORREF fillColor, COLORREF bgColor) {

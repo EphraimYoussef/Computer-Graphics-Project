@@ -6,12 +6,7 @@
 #include "include/HandleCommand.h"
 #include "include/HandleLBUP.h"
 #include "include/HandleLBDown.h"
-#include "./include/LineAlgorithms.h"
-#include "./include/CircleAlgorithms.h"
-#include "./include/EllipseAlgorithms.h"
-#include "./include/FillingAlgorithms.h"
-#include "./include/ClippingAlgorithms.h"
-#include "./include/CurvesAlgorithms.h"
+#include "include/HandleRBDown.h"
 
 using namespace std;
 using namespace Constants;
@@ -25,12 +20,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     static HBRUSH &BGBrush = state.BGBrush;
     static int &x1 = state.x1 , &y1 = state.y1, &x2 = state.x2, &y2 = state.y2 , &x = state.x, &y = state.y;
     static int &xc = state.xc, &yc = state.yc, &r = state.r, &a = state.a, &b = state.b;
-    static vector<POINT>& convexPoints = state.convexPoints;
+    static vector<POINT>& convexPoints = state.convexPoints , & nonConvexPoints = state.nonConvexPoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
 
     if(currentTool != FILL_CONVEX){
         convexPoints.clear();
+    }
+
+    if(currentTool != FILL_NON_CONVEX){
+        nonConvexPoints.clear();
     }
 
     switch (msg) {
@@ -56,32 +55,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             break;
         }
 
-
         case WM_RBUTTONDOWN: {
-            switch (currentTool) {
-
-                // ? Convex Filling
-                case FILL_CONVEX: {
-                    if(convexPoints.size() > 2) {
-                        hdc = GetDC(hwnd);
-                        ConvexFilling(hdc, convexPoints, c);
-                        ReleaseDC(hwnd, hdc);
-                        convexPoints.clear();
-                    }
-                    else{
-                        MessageBox(hwnd, "At least 3 convexPoints are required to fill a convex polygon, "
-                                         "please try again with new convexPoints", "Error", MB_OK);
-                        convexPoints.clear();
-                    }
-                    break;
-                }
-
-
-                default: {
-                    break;
-                }
-
-            }
+            HandleRBDown(hwnd , wp , lp , hdc , state);
+            break;
         }
 
         case WM_ERASEBKGND: {

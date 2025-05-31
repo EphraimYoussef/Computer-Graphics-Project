@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 #include "../include/ProgramState.h"
 #include "../include/Constants.h"
-#include "../include/HandleLBUP.h"
+#include "../include/HandleLBDown.h"
 #include "../include/LineAlgorithms.h"
 #include "../include/CircleAlgorithms.h"
 #include "../include/EllipseAlgorithms.h"
@@ -16,7 +16,7 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
     static HBRUSH &BGBrush = state.BGBrush;
     static int &x1 = state.x1 , &y1 = state.y1, &x2 = state.x2, &y2 = state.y2 , &x = state.x, &y = state.y;
     static int &xc = state.xc, &yc = state.yc, &r = state.r, &a = state.a, &b = state.b;
-    static vector<POINT>& convexPoints = state.convexPoints;
+    static vector<POINT>& convexPoints = state.convexPoints , &nonConvexPoints = state.nonConvexPoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
 
@@ -62,6 +62,14 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
             x = LOWORD(lp);
             y = HIWORD(lp);
             convexPoints.push_back({x, y});
+            break;
+        }
+
+        // ? Non-Convex Filling
+        case FILL_NON_CONVEX: {
+            x = LOWORD(lp);
+            y = HIWORD(lp);
+            nonConvexPoints.push_back({x, y});
             break;
         }
 

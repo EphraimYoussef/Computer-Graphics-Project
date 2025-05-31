@@ -195,7 +195,9 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
         case FILL_NON_CONVEX:{
-            // TODO: Non-Convex Filling
+            // ! Non-Convex Filling
+            MessageBox(hwnd, "Left-click to enter nonConvexPoints. When finished, right-click to start Non-Convex Filling.", "Non-Convex Filling", MB_OK);
+            currentTool = FILL_NON_CONVEX;
             break;
         }
         case FILL_RECURSIVE:{

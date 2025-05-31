@@ -13,7 +13,7 @@ struct ProgramState {
     int x1 = 0 , y1 = 0 , x2 = 0 , y2 = 0;
     int xc = 0 , yc = 0 , a = 0 , b = 0;
     int r = 0 , x = 0 , y = 0;
-    vector<POINT> convexPoints;
+    vector<POINT> convexPoints , nonConvexPoints;
 };
 
 #endif //PROJECT_PROGRAMSTATE_H
