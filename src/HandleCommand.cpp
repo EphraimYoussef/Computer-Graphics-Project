@@ -195,7 +195,9 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         // ? Curve
         case CARDINAL_SPLINE:{
-            // TODO: Cardinal_Spline_Curve
+            currentTool = CARDINAL_SPLINE;
+            MessageBox(hwnd, "Left-click to enter cardinal spline points. \n"
+                             "When finished, right-click to start drawing the curve.", "Cardinal Spline Curve", MB_OK);
             break;
         }
 

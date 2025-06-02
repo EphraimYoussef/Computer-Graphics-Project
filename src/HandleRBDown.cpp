@@ -7,6 +7,7 @@
 #include "../include/CircleAlgorithms.h"
 #include "../include/EllipseAlgorithms.h"
 #include "../include/FillingAlgorithms.h"
+#include "../include/CurvesAlgorithms.h"
 
 using namespace std;
 using namespace Constants;
@@ -16,7 +17,8 @@ void HandleRBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
     static HBRUSH &BGBrush = state.BGBrush;
     static int &x1 = state.x1 , &y1 = state.y1, &x2 = state.x2, &y2 = state.y2 , &x = state.x, &y = state.y;
     static int &xc = state.xc, &yc = state.yc, &r = state.r, &a = state.a, &b = state.b;
-    static vector<POINT>& convexPoints = state.convexPoints , &nonConvexPoints = state.nonConvexPoints;
+    static vector<POINT>& convexPoints = state.convexPoints , &nonConvexPoints = state.nonConvexPoints ;
+    static vector<Vector2>& splinePoints = state.splinePoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
 
@@ -53,6 +55,21 @@ void HandleRBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
                 nonConvexPoints.clear();
             }
 
+            break;
+        }
+
+        case CARDINAL_SPLINE: {
+            if(splinePoints.size() > 2) {
+                hdc = GetDC(hwnd);
+                CardinalSpline(hdc, splinePoints , 0.5 , c);
+                ReleaseDC(hwnd, hdc);
+                splinePoints.clear();
+            }
+            else{
+                MessageBox(hwnd, "At least 3 points are required to fill a cardinal spline, "
+                                 "please try again with new points", "Error", MB_OK);
+                splinePoints.clear();
+            }
             break;
         }
 

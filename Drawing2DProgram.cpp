@@ -21,6 +21,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     static int &x1 = state.x1 , &y1 = state.y1, &x2 = state.x2, &y2 = state.y2 , &x = state.x, &y = state.y;
     static int &xc = state.xc, &yc = state.yc, &r = state.r, &a = state.a, &b = state.b;
     static vector<POINT>& convexPoints = state.convexPoints , & nonConvexPoints = state.nonConvexPoints;
+    static vector<Vector2>& splinePoints = state.splinePoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
 
@@ -30,6 +31,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
     if(currentTool != FILL_NON_CONVEX){
         nonConvexPoints.clear();
+    }
+
+    if(currentTool != CARDINAL_SPLINE){
+        splinePoints.clear();
     }
 
     switch (msg) {
@@ -68,7 +73,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             return 1;
         }
 
-
         case WM_PAINT: {
             PAINTSTRUCT ps;
             hdc = BeginPaint(hwnd, &ps);
@@ -81,10 +85,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
                 Ellipse(hdc, pt.x - 2, pt.y - 2, pt.x + 2, pt.y + 2);
             }
 
+            for (const auto& pt : splinePoints) {
+                Ellipse(hdc, pt.x - 2, pt.y - 2, pt.x + 2, pt.y + 2);
+            }
+
             EndPaint(hwnd, &ps);
             break;
         }
-
 
         case WM_CLOSE: {
             DestroyWindow(hwnd);

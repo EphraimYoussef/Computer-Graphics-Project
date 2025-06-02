@@ -232,7 +232,7 @@ void NonRecursiveFloodFill(HDC hdc, int x, int y, COLORREF fillColor, COLORREF b
 //!============================================================================================
 
 void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c) {
-    MessageBox(NULL, "Enter the quarter you want to fill in the console", "Fill Quarter Circle With Lines", MB_OK);
+    MessageBox(nullptr, "Enter the quarter you want to fill in the console", "Fill Quarter Circle With Lines", MB_OK);
     cout << "Enter Quarter (1-4): ";
     int k; cin >> k;
 
@@ -243,7 +243,7 @@ void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c) {
         MidPointCircle(hdc, xc, yc, r, c);
     }
     else {
-        MessageBox(NULL, "Invalid Quarter Number , Try again " ,"Invalid Input!", MB_OK ) ;
+        MessageBox(nullptr, "Invalid Quarter Number , Try again " ,"Invalid Input!", MB_OK ) ;
         return;
     }
     while (x <= y) {
@@ -281,14 +281,14 @@ void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c) {
 
 
 void FillQuarterCircleWithCircles(HDC hdc, int xc, int yc, int r, COLORREF c){
-    MessageBox(NULL, "Enter the quarter you want to fill in the console", "Fill Quarter Circle With Circles", MB_OK);
+    MessageBox(nullptr, "Enter the quarter you want to fill in the console", "Fill Quarter Circle With Circles", MB_OK);
     cout << "Enter Quarter (1-4): ";
     int k; cin >> k;
     if(k >= 1 && k <= 4){
         MidPointCircle(hdc, xc, yc, r, c);
     }
     else {
-        MessageBox(NULL, "Invalid Quarter Number , Try again " ,"Invalid Input!", MB_OK ) ;
+        MessageBox(nullptr, "Invalid Quarter Number , Try again " ,"Invalid Input!", MB_OK ) ;
         return;
     }
     for (int ri = 1; ri <= r; ++ri) {
@@ -336,12 +336,12 @@ void FillQuarterCircleWithCircles(HDC hdc, int xc, int yc, int r, COLORREF c){
 //!============================================================================================
 
 void FillSquareWithHermiteVertical(HDC hdc, int x1, int y1, int size ,  COLORREF c) {
-    MessageBox(NULL, "Enter the step for the curve", "Curve Step", MB_OK);
+    MessageBox(nullptr, "Enter the step for the curve in the console", "Curve Step", MB_OK);
     cout << "Enter the Curve Step : " ;
     int stp = 1 ;
     cin >> stp ;
     if (stp < 1 ){
-        MessageBox(NULL, "Step must be bigger than 1 ", "Invalid input", MB_OK);
+        MessageBox(nullptr, "Step must be bigger than 1 ", "Invalid input", MB_OK);
         return;
     }
     for (int x = x1; x <= x1 + size; x += stp) {
@@ -353,18 +353,18 @@ void FillSquareWithHermiteVertical(HDC hdc, int x1, int y1, int size ,  COLORREF
 }
 
 void FillRectangleWithBezierHorizontal(HDC hdc, int x1, int y1, int width, int height , COLORREF c) {
-    MessageBox(NULL, "Enter the step for the curve", "Curve Step", MB_OK);
+    MessageBox(nullptr, "Enter the step for the curve in the console", "Curve Step", MB_OK);
     cout << "Enter the Curve Step : " ;
     int stp = 1 ;
     cin >> stp ;
     if (stp < 1 ){
-        MessageBox(NULL, "Step must be bigger than 1 ", "Invalid input", MB_OK);
+        MessageBox(nullptr, "Step must be bigger than 1 ", "Invalid input", MB_OK);
         return;
     }
     for (int y = y1; y <= y1 + height; y += stp) {
         Vector2 P0(x1, y);
-        Vector2 P1(x1 + width / 3, y - 50);
-        Vector2 P2(x1 + 2 * width / 3, y + 50);
+        Vector2 P1(x1 + width / 3.0, y - 50);
+        Vector2 P2(x1 + 2.0 * width / 3, y + 50);
         Vector2 P3(x1 + width, y);
         DrawBezierCurve(hdc, P0, P1, P2, P3 , 500 , c  );
     }

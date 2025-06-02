@@ -16,7 +16,8 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
     static HBRUSH &BGBrush = state.BGBrush;
     static int &x1 = state.x1 , &y1 = state.y1, &x2 = state.x2, &y2 = state.y2 , &x = state.x, &y = state.y;
     static int &xc = state.xc, &yc = state.yc, &r = state.r, &a = state.a, &b = state.b;
-    static vector<POINT>& convexPoints = state.convexPoints , &nonConvexPoints = state.nonConvexPoints;
+    static vector<POINT>& convexPoints = state.convexPoints , &nonConvexPoints = state.nonConvexPoints ;
+    static vector<Vector2>& splinePoints = state.splinePoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
 
@@ -111,6 +112,15 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
         }
 
 
+        // !=========================================================================================================
+
+        case CARDINAL_SPLINE: {
+            x = LOWORD(lp);
+            y = HIWORD(lp);
+            splinePoints.emplace_back(round(x), round(y));
+            InvalidateRect(hwnd, nullptr, FALSE);
+            break;
+        }
 
 
         default: {
