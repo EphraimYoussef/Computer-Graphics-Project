@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 #include "../include/FillingAlgorithms.h"
 #include "../include/LineAlgorithms.h"
-
+#include "../include/CircleAlgorithms.h"
 using namespace std;
 
 const int maxHeight = 1080;
@@ -228,3 +228,96 @@ void NonRecursiveFloodFill(HDC hdc, int x, int y, COLORREF fillColor, COLORREF b
 //    }
 //}
 
+void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c) {
+    MessageBox(NULL, "Enter the quarter you want to fill in the console", "Fill Quarter Circle With Lines", MB_OK);
+    cout << "Enter Quarter (1-4): ";
+    int k; cin >> k;
+
+    int x = 0;
+    int y = r;
+    int d = 3 - 2 * r;
+    if(k >= 1 && k <= 4){
+        MidPointCircle(hdc, xc, yc, r, c);
+    }
+    while (x <= y) {
+        switch (k) {
+            case 1: // Top-Right
+                MidPointLine(hdc, xc, yc, xc + x, yc - y, c);
+                MidPointLine(hdc, xc, yc, xc + y, yc - x, c);
+                break;
+            case 2: // Top-Left
+                DDALine(hdc, xc, yc, xc - x, yc - y, c);
+                DDALine(hdc, xc, yc, xc - y, yc - x, c);
+                break;
+            case 3: // Bottom-Left
+                DDALine(hdc, xc, yc, xc - x, yc + y, c);
+                DDALine(hdc, xc, yc, xc - y, yc + x, c);
+                break;
+            case 4: // Bottom-Right
+                DDALine(hdc, xc, yc, xc + x, yc + y, c);
+                DDALine(hdc, xc, yc, xc + y, yc + x, c);
+                break;
+            default:
+                cout << "Invalid quarter!\n";
+                return;
+        }
+
+        if (d < 0) {
+            d += 2 * x + 2;
+        } else {
+            d += 2 * (x - y) + 5;
+            y--;
+        }
+        x++;
+    }
+}
+
+
+void FillQuarterCircleWithCircles(HDC hdc, int xc, int yc, int r, COLORREF c){
+    MessageBox(NULL, "Enter the quarter you want to fill in the console", "Fill Quarter Circle With Circles", MB_OK);
+    cout << "Enter Quarter (1-4): ";
+    int k; cin >> k;
+    if(k >= 1 && k <= 4){
+        MidPointCircle(hdc, xc, yc, r, c);
+    }
+    for (int ri = 1; ri <= r; ++ri) {
+        int x = 0;
+        int y = ri;
+        int d = 3 - 2 * ri;
+
+        while (x <= y) {
+            // Plot quarter pixels based on user choice
+            switch (k) {
+                case 1: // Top-Right
+                    SetPixel(hdc, xc + x, yc - y, c);
+                    SetPixel(hdc, xc + y, yc - x, c);
+                    break;
+                case 2: // Top-Left
+                    SetPixel(hdc, xc - x, yc - y, c);
+                    SetPixel(hdc, xc - y, yc - x, c);
+                    break;
+                case 3: // Bottom-Left
+                    SetPixel(hdc, xc - x, yc + y, c);
+                    SetPixel(hdc, xc - y, yc + x, c);
+                    break;
+                case 4: // Bottom-Right
+                    SetPixel(hdc, xc + x, yc + y, c);
+                    SetPixel(hdc, xc + y, yc + x, c);
+                    break;
+                default:
+                    cout << "Invalid quarter!\n";
+                    return;
+            }
+
+            if (d < 0) {
+                d += 4 * x + 6;
+            } else {
+                d += 4 * (x - y) + 10;
+                y--;
+            }
+            x++;
+        }
+    }
+
+
+}

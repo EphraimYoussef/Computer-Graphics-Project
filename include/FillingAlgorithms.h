@@ -17,4 +17,8 @@ void RecursiveFloodFill(HDC hdc , int x , int y , COLORREF fillColor , COLORREF 
 
 void NonRecursiveFloodFill(HDC hdc , int x , int y , COLORREF fillColor , COLORREF bgColor);
 
+void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c);
+
+void FillQuarterCircleWithCircles(HDC hdc, int xc, int yc, int r, COLORREF c);
+
 #endif //PROJECT_FILLINGALGORITHMS_H

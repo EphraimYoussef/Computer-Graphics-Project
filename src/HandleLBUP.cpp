@@ -95,6 +95,26 @@ void HandleLBUP(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &state
             break;
         }
 
+        case FILL_CIRCLE_LINES: {
+            x = LOWORD(lp);
+            y = HIWORD(lp);
+            hdc = GetDC(hwnd);
+            r = (int)round(sqrt((x-xc)*(x-xc) + (y-yc)*(y-yc)));
+            FillQuarterCircleWithLines(hdc, xc, yc, r, c);
+            ReleaseDC(hwnd, hdc);
+            break;
+        }
+
+        case FILL_CIRCLE_CIRCLES: {
+            x = LOWORD(lp);
+            y = HIWORD(lp);
+            hdc = GetDC(hwnd);
+            r = (int)round(sqrt((x-xc)*(x-xc) + (y-yc)*(y-yc)));
+            FillQuarterCircleWithCircles(hdc, xc, yc, r, c);
+            ReleaseDC(hwnd, hdc);
+            break;
+        }
+
         default: {
             break;
         }

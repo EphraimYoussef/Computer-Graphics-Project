@@ -97,6 +97,15 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
             break;
         }
 
+        case FILL_CIRCLE_LINES:
+        case FILL_CIRCLE_CIRCLES: {
+            xc = LOWORD(lp);
+            yc = HIWORD(lp);
+            break;
+        }
+
+
+
         default: {
             break;
         }

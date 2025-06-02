@@ -229,10 +229,16 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
         // ? Filling
         case FILL_CIRCLE_LINES: {
             // TODO: Filling Circle with lines
+            currentTool = FILL_CIRCLE_LINES;
+
+            MessageBox(hwnd, "Input the quarter in the console\nClick and hold the left mouse button, then release it to draw a Filling the quarter of the Circle with lines.", "Filling Circle with lines", MB_OK);
+
             break;
         }
         case FILL_CIRCLE_CIRCLES: {
             // TODO: Filling Circle with circles
+            currentTool = FILL_CIRCLE_CIRCLES;
+            MessageBox(hwnd, "Input the quarter in the console\nClick and hold the left mouse button, then release it to draw a Filling the quarter of the Circle with Circles.", "Filling Circle with Circles", MB_OK);
             break;
         }
         case FILL_SQUARE_HERMITE_V: {
