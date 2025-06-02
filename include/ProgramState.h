@@ -7,7 +7,7 @@
 using namespace std;
 
 struct ProgramState {
-    HBRUSH BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
+    HBRUSH BGBrush = (HBRUSH)GetStockObject(DKGRAY_BRUSH);
     COLORREF c = RGB(255, 0, 0);
     int currentTool = 0;
     int x1 = 0 , y1 = 0 , x2 = 0 , y2 = 0;
