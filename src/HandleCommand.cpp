@@ -20,7 +20,11 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         // ? MAIN_MENU
         case CLEAR: {
-            // TODO: CLEAR
+            state.convexPoints.clear();
+            state.nonConvexPoints.clear();
+            state.currentTool = 0;
+            InvalidateRect(hwnd, nullptr, TRUE);
+            UpdateWindow(hwnd);
             break;
         }
         case SAVE : {
@@ -34,7 +38,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         //!=============================================================================================================
 
-            // ? BG_COLOR
+        // ? BG_COLOR
         case BG_WHITE: {
             // ! BG_COLOR_WHITE
             BGBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -47,6 +51,25 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             InvalidateRect(hwnd, nullptr, TRUE);
             break;
         }
+        case BG_GRAY: {
+            // ! BG_COLOR_GRAY
+            BGBrush = (HBRUSH) GetStockObject(GRAY_BRUSH);
+            InvalidateRect(hwnd, nullptr, TRUE);
+            break;
+        }
+        case BG_LT_GRAY: {
+            // ! BG_COLOR_LIGHT_GRAY
+            BGBrush = (HBRUSH) GetStockObject(LTGRAY_BRUSH);
+            InvalidateRect(hwnd, nullptr, TRUE);
+            break;
+        }
+        case BG_DK_GRAY: {
+            // ! BG_COLOR_DARK_GRAY
+            BGBrush = (HBRUSH) GetStockObject(DKGRAY_BRUSH);
+            InvalidateRect(hwnd, nullptr, TRUE);
+            break;
+        }
+
 
         //!=============================================================================================================
 
@@ -64,29 +87,61 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             SetCursor(hCursor);
             break;
         }
+        case CURSOR_HAND: {
+            // ! CURSOR_HAND
+            HCURSOR hCursor = LoadCursor(nullptr, IDC_HAND);
+            SetClassLongPtr(hwnd, GCLP_HCURSOR, (LONG_PTR)hCursor);
+            SetCursor(hCursor);
+            break;
+        }
 
         //!=============================================================================================================
 
-            // ? SHAPE_COLOR
+        // ? SHAPE_COLOR
         case SHAPE_RED: {
             // ! SHAPE_COLOR_RED
-            c = RGB(255, 0, 0);
+            c = RED;
             break;
         }
         case SHAPE_GREEN: {
             // ! SHAPE_COLOR_GREEN
-            c = RGB(0, 255, 0);
+            c = GREEN;
             break;
         }
         case SHAPE_BLUE: {
             // ! SHAPE_COLOR_BLUE
-            c = RGB(0, 0, 255);
+            c = BLUE;
+            break;
+        }
+        case SHAPE_YELLOW: {
+            // ! SHAPE_COLOR_YELLOW
+            c = YELLOW;
+            break;
+        }
+        case SHAPE_MAGENTA: {
+            // ! SHAPE_COLOR_MAGENTA
+            c = MAGENTA;
+            break;
+        }
+        case SHAPE_CYAN: {
+            // ! SHAPE_COLOR_CYAN
+            c = CYAN;
+            break;
+        }
+        case SHAPE_ORANGE: {
+            // ! SHAPE_COLOR_ORANGE
+            c = ORANGE;
+            break;
+        }
+        case SHAPE_PURPLE: {
+            // ! SHAPE_COLOR_PURPLE
+            c = PURPLE;
             break;
         }
 
         //!=============================================================================================================
 
-            // ? Line
+        // ? Line
         case LINE_DDA: {
             // ! DDA
             currentTool = LINE_DDA;
@@ -108,7 +163,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         //!=============================================================================================================
 
-            // ? Circle
+        // ? Circle
         case CIRCLE_DIRECT: {
             // ! Direct
             currentTool = CIRCLE_DIRECT;
@@ -142,7 +197,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         //!=============================================================================================================
 
-            // ? Ellipse
+        // ? Ellipse
         case ELLIPSE_DIRECT: {
             // ! Direct
             currentTool = ELLIPSE_DIRECT;
@@ -171,7 +226,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         //!=============================================================================================================
 
-            // ? Filling
+        // ? Filling
         case FILL_CIRCLE_LINES: {
             // TODO: Filling Circle with lines
             break;
@@ -215,7 +270,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         //!=============================================================================================================
 
-            // ? CLIPPING RECTANGLE
+        // ? CLIPPING RECTANGLE
         case CLIP_RECT_POINT:{
             // TODO: CLIPPING RECTANGLE POINT
             break;
@@ -231,7 +286,7 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
 
         //!=============================================================================================================
 
-            // ? CLIPPING SQUARE
+        // ? CLIPPING SQUARE
         case CLIP_SQR_POINT:{
             // TODO: CLIPPING SQUARE POINT
             break;

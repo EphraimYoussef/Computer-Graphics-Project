@@ -1,18 +1,39 @@
 #ifndef PROJECT_CONSTANTS_H
 #define PROJECT_CONSTANTS_H
 
+#include <Windows.h>
+
 
 namespace Constants {
 
+    const COLORREF RED = RGB(255, 0, 0);
+    const COLORREF GREEN = RGB(0, 255, 0);
+    const COLORREF BLUE = RGB(0, 0, 255);
+    const COLORREF YELLOW = RGB(255, 255, 0);
+    const COLORREF CYAN = RGB(0, 255, 255);
+    const COLORREF MAGENTA = RGB(255, 0, 255);
+    const COLORREF ORANGE = RGB(255, 165, 0);
+    const COLORREF PURPLE = RGB(128, 0, 128);
+
+
     const int BG_WHITE = 11;
     const int BG_BLACK = 12;
+    const int BG_GRAY = 13;
+    const int BG_LT_GRAY = 14;
+    const int BG_DK_GRAY = 15;
 
     const int CURSOR_ARROW = 21;
     const int CURSOR_CROSS = 22;
+    const int CURSOR_HAND = 23;
 
     const int SHAPE_RED = 31;
     const int SHAPE_GREEN = 32;
     const int SHAPE_BLUE = 33;
+    const int SHAPE_YELLOW = 34;
+    const int SHAPE_CYAN = 35;
+    const int SHAPE_MAGENTA = 36;
+    const int SHAPE_ORANGE = 37;
+    const int SHAPE_PURPLE = 38;
 
     const int LINE_DDA = 411;
     const int LINE_MID_POINT = 412;

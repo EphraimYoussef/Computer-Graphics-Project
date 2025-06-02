@@ -9,6 +9,9 @@ HMENU CreateMainMenu() {
     // ? BG_COLOR
     HMENU BGColor = CreatePopupMenu();
     AppendMenu(BGColor, MF_STRING, BG_WHITE, "White");
+    AppendMenu(BGColor, MF_STRING, BG_LT_GRAY, "Light Gray");
+    AppendMenu(BGColor, MF_STRING, BG_GRAY, "Gray");
+    AppendMenu(BGColor, MF_STRING, BG_DK_GRAY, "Dark Gray");
     AppendMenu(BGColor, MF_STRING, BG_BLACK, "Black");
 
     //!=========================================================================================================
@@ -17,6 +20,7 @@ HMENU CreateMainMenu() {
     HMENU Cursor = CreatePopupMenu();
     AppendMenu(Cursor, MF_STRING, CURSOR_ARROW, "Arrow");
     AppendMenu(Cursor, MF_STRING, CURSOR_CROSS, "Cross");
+    AppendMenu(Cursor, MF_STRING, CURSOR_HAND, "Hand");
 
     //!=========================================================================================================
 
@@ -25,6 +29,11 @@ HMENU CreateMainMenu() {
     AppendMenu(ShapeColor, MF_STRING, SHAPE_RED, "Red");
     AppendMenu(ShapeColor, MF_STRING, SHAPE_GREEN, "Green");
     AppendMenu(ShapeColor, MF_STRING, SHAPE_BLUE, "Blue");
+    AppendMenu(ShapeColor, MF_STRING, SHAPE_YELLOW, "Yellow");
+    AppendMenu(ShapeColor, MF_STRING, SHAPE_MAGENTA, "Magenta");
+    AppendMenu(ShapeColor, MF_STRING, SHAPE_CYAN, "Cyan");
+    AppendMenu(ShapeColor, MF_STRING, SHAPE_ORANGE, "Orange");
+    AppendMenu(ShapeColor, MF_STRING, SHAPE_PURPLE, "Purple");
 
     //!=========================================================================================================
 

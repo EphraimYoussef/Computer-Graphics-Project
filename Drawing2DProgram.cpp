@@ -68,6 +68,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             return 1;
         }
 
+
+        case WM_PAINT: {
+            PAINTSTRUCT ps;
+            hdc = BeginPaint(hwnd, &ps);
+
+            for (const auto& pt : convexPoints) {
+                Ellipse(hdc, pt.x - 2, pt.y - 2, pt.x + 2, pt.y + 2);
+            }
+
+            for (const auto& pt : nonConvexPoints) {
+                Ellipse(hdc, pt.x - 2, pt.y - 2, pt.x + 2, pt.y + 2);
+            }
+
+            EndPaint(hwnd, &ps);
+            break;
+        }
+
+
         case WM_CLOSE: {
             DestroyWindow(hwnd);
             break;

@@ -62,6 +62,7 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
             x = LOWORD(lp);
             y = HIWORD(lp);
             convexPoints.push_back({x, y});
+            InvalidateRect(hwnd, nullptr, FALSE);
             break;
         }
 
@@ -70,6 +71,7 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
             x = LOWORD(lp);
             y = HIWORD(lp);
             nonConvexPoints.push_back({x, y});
+            InvalidateRect(hwnd, nullptr, FALSE);
             break;
         }
 
