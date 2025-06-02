@@ -114,6 +114,27 @@ void HandleLBUP(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &state
             ReleaseDC(hwnd, hdc);
             break;
         }
+        case FILL_SQUARE_HERMITE_V: {
+            x2 = LOWORD(lp);
+            y2 = HIWORD(lp);
+            hdc = GetDC(hwnd);
+            int size = abs(x2 - x1) ;
+            FillSquareWithHermiteVertical (hdc , x1 , y1 , size , c );
+            ReleaseDC(hwnd, hdc);
+
+            break;
+        }
+        case FILL_RECT_BEZIER_H: {
+            x2 = LOWORD(lp);
+            y2 = HIWORD(lp);
+            hdc = GetDC(hwnd);
+            int h = abs (y2 - y1 ) , w= abs(x2 - x1) ;
+            FillRectangleWithBezierHorizontal(hdc , x1 , y1 , w , h , c );
+            ReleaseDC(hwnd, hdc);
+
+            break;
+        }
+
 
         default: {
             break;

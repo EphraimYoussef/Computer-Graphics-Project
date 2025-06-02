@@ -21,4 +21,11 @@ void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c);
 
 void FillQuarterCircleWithCircles(HDC hdc, int xc, int yc, int r, COLORREF c);
 
+void FillSquareWithHermiteVertical(HDC hdc, int x1, int y1, int size ,COLORREF c) ;
+
+
+
+void FillRectangleWithBezierHorizontal(HDC hdc, int x1, int y1, int width, int height, COLORREF c) ;
+
+
 #endif //PROJECT_FILLINGALGORITHMS_H

@@ -3,6 +3,7 @@
 #include "../include/FillingAlgorithms.h"
 #include "../include/LineAlgorithms.h"
 #include "../include/CircleAlgorithms.h"
+#include "../include/CurvesAlgorithms.h"
 using namespace std;
 
 const int maxHeight = 1080;
@@ -228,6 +229,8 @@ void NonRecursiveFloodFill(HDC hdc, int x, int y, COLORREF fillColor, COLORREF b
 //    }
 //}
 
+//!============================================================================================
+
 void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c) {
     MessageBox(NULL, "Enter the quarter you want to fill in the console", "Fill Quarter Circle With Lines", MB_OK);
     cout << "Enter Quarter (1-4): ";
@@ -238,6 +241,10 @@ void FillQuarterCircleWithLines(HDC hdc, int xc, int yc, int r, COLORREF c) {
     int d = 3 - 2 * r;
     if(k >= 1 && k <= 4){
         MidPointCircle(hdc, xc, yc, r, c);
+    }
+    else {
+        MessageBox(NULL, "Invalid Quarter Number , Try again " ,"Invalid Input!", MB_OK ) ;
+        return;
     }
     while (x <= y) {
         switch (k) {
@@ -280,6 +287,10 @@ void FillQuarterCircleWithCircles(HDC hdc, int xc, int yc, int r, COLORREF c){
     if(k >= 1 && k <= 4){
         MidPointCircle(hdc, xc, yc, r, c);
     }
+    else {
+        MessageBox(NULL, "Invalid Quarter Number , Try again " ,"Invalid Input!", MB_OK ) ;
+        return;
+    }
     for (int ri = 1; ri <= r; ++ri) {
         int x = 0;
         int y = ri;
@@ -320,4 +331,41 @@ void FillQuarterCircleWithCircles(HDC hdc, int xc, int yc, int r, COLORREF c){
     }
 
 
+}
+
+//!============================================================================================
+
+void FillSquareWithHermiteVertical(HDC hdc, int x1, int y1, int size ,  COLORREF c) {
+    MessageBox(NULL, "Enter the step for the curve", "Curve Step", MB_OK);
+    cout << "Enter the Curve Step : " ;
+    int stp = 1 ;
+    cin >> stp ;
+    if (stp < 1 ){
+        MessageBox(NULL, "Step must be bigger than 1 ", "Invalid input", MB_OK);
+        return;
+    }
+    for (int x = x1; x <= x1 + size; x += stp) {
+        Vector2 P0(x, y1);
+        Vector2 P1(x, y1 + size);
+        Vector2 T0(0, 50), T1(0, 50);
+        DrawHermiteCurve(hdc, P0, T0, P1, T1 , 500 , c );
+    }
+}
+
+void FillRectangleWithBezierHorizontal(HDC hdc, int x1, int y1, int width, int height , COLORREF c) {
+    MessageBox(NULL, "Enter the step for the curve", "Curve Step", MB_OK);
+    cout << "Enter the Curve Step : " ;
+    int stp = 1 ;
+    cin >> stp ;
+    if (stp < 1 ){
+        MessageBox(NULL, "Step must be bigger than 1 ", "Invalid input", MB_OK);
+        return;
+    }
+    for (int y = y1; y <= y1 + height; y += stp) {
+        Vector2 P0(x1, y);
+        Vector2 P1(x1 + width / 3, y - 50);
+        Vector2 P2(x1 + 2 * width / 3, y + 50);
+        Vector2 P3(x1 + width, y);
+        DrawBezierCurve(hdc, P0, P1, P2, P3 , 500 , c  );
+    }
 }

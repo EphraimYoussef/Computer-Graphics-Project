@@ -103,6 +103,13 @@ void HandleLBDown(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &sta
             yc = HIWORD(lp);
             break;
         }
+        case FILL_SQUARE_HERMITE_V:
+        case FILL_RECT_BEZIER_H: {
+            x1 = LOWORD(lp);
+            y1 = HIWORD(lp);
+            break;
+        }
+
 
 
 

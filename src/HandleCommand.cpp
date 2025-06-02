@@ -217,11 +217,15 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
             break;
         }
         case FILL_SQUARE_HERMITE_V: {
-            // TODO: Filling Square with Hermit [Vertical]
+            currentTool = FILL_SQUARE_HERMITE_V;
+            MessageBox(hwnd, "Click and hold the left mouse button, then release it to determine the square side length based on the X axis"
+                    , "Filling Square with Hermit Curve [Vertical]", MB_OK);
             break;
         }
         case FILL_RECT_BEZIER_H: {
-            // TODO: Filling Rectangle with Bezier [horizontal]
+            currentTool = FILL_RECT_BEZIER_H;
+            MessageBox(hwnd, "Click and hold the left mouse button, then release it to determine the Rectangle width and height based on the X & Y axis"
+                    , "Filling Rectangle with Bezier Curve [horizontal]", MB_OK);
             break;
         }
         case FILL_CONVEX:{
