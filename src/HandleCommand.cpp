@@ -3,6 +3,7 @@
 #include "../include/HandleCommand.h"
 #include "../include/Constants.h"
 #include "../include/ProgramState.h"
+#include "../include/SaveAndLoad.h"
 
 using namespace std;
 using namespace Constants;
@@ -29,10 +30,12 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
         }
         case SAVE : {
             // TODO: SAVE
+            SaveWindowToFile(hwnd, "output.bmp");
             break;
         }
         case LOAD : {
             // TODO: LOAD
+            LoadImageToWindow(hwnd, "output.bmp");
             break;
         }
 
