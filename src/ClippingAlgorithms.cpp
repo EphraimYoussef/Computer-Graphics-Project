@@ -160,6 +160,12 @@ bool ClippingAlgorithms::isPointInsideCircle(const Point &p, const Circle &circl
 }
 
 bool ClippingAlgorithms::clipLineCircle(Point &p1, Point &p2, const Circle &circle) {
+    if(p1.y<p2.y) {
+        swap(p1, p2);
+    }
+    else if (p1.y == p2.y) {
+        return false;
+    }
     float x1 = p1.x - circle.center.x;
     float y1 = p1.y - circle.center.y;
     float x2 = p2.x - circle.center.x;

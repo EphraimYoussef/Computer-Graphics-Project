@@ -223,16 +223,16 @@ void HandleLBUP(HWND hwnd, WPARAM wp , LPARAM lp , HDC hdc , ProgramState &state
             break;
         }
         case CLIP_CIRCLE_LINE: {
-            x = LOWORD(lp);
-            y = HIWORD(lp);
+            x2 = LOWORD(lp);
+            y2 = HIWORD(lp);
             hdc = GetDC(hwnd);
             Point p1{} , p2{};
-            p1.x = float(xc) , p1.y = float(yc);
-            p2.x = float(x) , p2.y = float(y);
+            p1.x = float(x1) , p1.y = float(y1);
+            p2.x = float(x2) , p2.y = float(y2);
             bool res = ClippingAlgorithms::clipLineCircle(p1 , p2 , circleWin);
             if (res) {
                 // ? Draw the clipped line
-                MidPointLine(hdc , p1.x , p1.y , p2.x , p2.y , c);
+                MidPointLine(hdc , (int)round(p1.x) , (int)round(p1.y) , (int)round(p2.x) , (int)round(p2.y) , c);
             }
             ReleaseDC(hwnd, hdc);
             break;
