@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <bits/stdc++.h>
 #include "CurvesAlgorithms.h"
+#include "ClippingAlgorithms.h"
 
 using namespace std;
 
@@ -16,6 +17,11 @@ struct ProgramState {
     int r = 0 , x = 0 , y = 0;
     vector<POINT> convexPoints , nonConvexPoints ;
     vector<Vector2> splinePoints;
+    vector<Point> clipPoints;
+    struct Rectangle rectangleWindow;
+    struct Circle circleWindow;
+    struct Square squareWindow;
+    bool rectClipActive = false , circleClipActive = false , sqrClipActive = false;
 };
 
 #endif //PROJECT_PROGRAMSTATE_H

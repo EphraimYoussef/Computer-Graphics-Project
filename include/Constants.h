@@ -63,9 +63,15 @@ namespace Constants {
     const int CLIP_RECT_POINT = 611;
     const int CLIP_RECT_LINE = 612;
     const int CLIP_RECT_POLYGON = 613;
+    const int CLIP_RECT_WINDOW = 614;
 
     const int CLIP_SQR_POINT = 621;
     const int CLIP_SQR_LINE = 622;
+    const int CLIP_SQR_WINDOW = 623;
+
+    const int CLIP_CIRCLE_POINT = 631;
+    const int CLIP_CIRCLE_LINE = 632;
+    const int CLIP_CIRCLE_WINDOW = 633;
 
     const int CLEAR = 101;
     const int SAVE = 102;

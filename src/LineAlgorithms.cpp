@@ -81,3 +81,9 @@ void ParametricLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c) {
         SetPixel(hdc , (int)round(x) , (int)round(y) , c);
     }
 }
+
+void DrawPoint(HWND hwnd, int x, int y) {
+    HDC hdc = GetDC(hwnd);
+    Ellipse(hdc, x - 2, y - 2,  x+ 2, y + 2);
+    ReleaseDC(hwnd, hdc);
+}

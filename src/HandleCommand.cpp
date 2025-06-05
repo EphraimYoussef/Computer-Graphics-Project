@@ -15,6 +15,8 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
     static vector<POINT>& convexPoints = state.convexPoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
+    static bool & rectClipActive = state.rectClipActive
+    , & squareClipActive = state.sqrClipActive, & circleClipActive = state.circleClipActive;
 
     switch (LOWORD(wp)) {
 
@@ -254,28 +256,100 @@ void HandleCommand(HWND hwnd, WPARAM wp, ProgramState& state) {
         //!=============================================================================================================
 
         // ? CLIPPING RECTANGLE
+        case CLIP_RECT_WINDOW: {
+            currentTool = CLIP_RECT_WINDOW;
+            MessageBox(hwnd, "Click in the top left corner and release it in the bottom right corner"
+                             " to draw a Clipping Rectangle Window.", "Clipping Rectangle", MB_OK);
+            break;
+        }
         case CLIP_RECT_POINT:{
-            // TODO: CLIPPING RECTANGLE POINT
+            if(rectClipActive){
+                currentTool = CLIP_RECT_POINT;
+                MessageBox(hwnd, "Click where you want to put the point to be clipped.", "Clipping Rectangle", MB_OK);
+            }
+            else{
+                MessageBox(hwnd, "You need to draw a Clipping Rectangle Window first.", "Clipping Rectangle", MB_OK);
+            }
             break;
         }
         case CLIP_RECT_LINE:{
-            // TODO: CLIPPING RECTANGLE LINE
+            if(rectClipActive){
+                currentTool = CLIP_RECT_LINE;
+                MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Line to be clipped.", "Clipping Rectangle", MB_OK);
+            }
+            else{
+                MessageBox(hwnd, "You need to draw a Clipping Rectangle Window first.", "Clipping Rectangle", MB_OK);
+            }
             break;
         }
         case CLIP_RECT_POLYGON:{
-            // TODO: CLIPPING RECTANGLE POLYGON
+            if(rectClipActive){
+                currentTool = CLIP_RECT_POLYGON;
+                MessageBox(hwnd, "Left-click to enter polygon points. When finished, right-click to start Clipping the Polygon.", "Clipping Rectangle", MB_OK);
+            }
+            else{
+                MessageBox(hwnd, "You need to draw a Clipping Rectangle Window first.", "Clipping Rectangle", MB_OK);
+            }
             break;
         }
 
         //!=============================================================================================================
 
         // ? CLIPPING SQUARE
+        case CLIP_SQR_WINDOW: {
+            currentTool = CLIP_SQR_WINDOW;
+            MessageBox(hwnd, "Click in the top left corner and release it in the top right corner to determine the square side length"
+                             " to draw a Clipping Square Window.", "Clipping Square", MB_OK);
+            break;
+        }
         case CLIP_SQR_POINT:{
-            // TODO: CLIPPING SQUARE POINT
+            if(squareClipActive){
+                currentTool = CLIP_SQR_POINT;
+                MessageBox(hwnd, "Click where you want to put the point to be clipped.", "Clipping Square", MB_OK);
+            }
+            else{
+                MessageBox(hwnd, "You need to draw a Clipping Square Window first.", "Clipping Square", MB_OK);
+            }
             break;
         }
         case CLIP_SQR_LINE:{
-            // TODO: CLIPPING SQUARE LINE
+            if(squareClipActive){
+                currentTool = CLIP_SQR_LINE;
+                MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Line to be clipped.", "Clipping Square", MB_OK);
+            }
+            else{
+                MessageBox(hwnd, "You need to draw a Clipping Square Window first.", "Clipping Square", MB_OK);
+            }
+            break;
+        }
+
+        //!=============================================================================================================
+
+        // ? CLIPPING CIRCLE
+        case CLIP_CIRCLE_WINDOW: {
+            currentTool = CLIP_CIRCLE_WINDOW;
+            MessageBox(hwnd, "Click in the center and release it to determine the radius "
+                             "to draw a Clipping Circle Window.", "Clipping Circle", MB_OK);
+            break;
+        }
+        case CLIP_CIRCLE_POINT:{
+            if(circleClipActive){
+                currentTool = CLIP_CIRCLE_POINT;
+                MessageBox(hwnd, "Click where you want to put the point to be clipped.", "Clipping Circle", MB_OK);
+            }
+            else{
+                MessageBox(hwnd, "You need to draw a Clipping Circle Window first.", "Clipping Circle", MB_OK);
+            }
+            break;
+        }
+        case CLIP_CIRCLE_LINE:{
+            if(circleClipActive){
+                currentTool = CLIP_CIRCLE_LINE;
+                MessageBox(hwnd, "Click and hold the left mouse button, then release it to draw a Line to be clipped.", "Clipping Circle", MB_OK);
+            }
+            else{
+                MessageBox(hwnd, "You need to draw a Clipping Circle Window first.", "Clipping Circle", MB_OK);
+            }
             break;
         }
 

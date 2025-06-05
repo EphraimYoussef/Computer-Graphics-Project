@@ -22,8 +22,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     static int &xc = state.xc, &yc = state.yc, &r = state.r, &a = state.a, &b = state.b;
     static vector<POINT>& convexPoints = state.convexPoints , & nonConvexPoints = state.nonConvexPoints;
     static vector<Vector2>& splinePoints = state.splinePoints;
+    static vector<Point>& clipPoints = state.clipPoints;
     static int& currentTool = state.currentTool;
     static COLORREF &c = state.c;
+    static bool & rectClipActive = state.rectClipActive
+    , & squareClipActive = state.sqrClipActive, & circleClipActive = state.circleClipActive;
 
     if(currentTool != FILL_CONVEX){
         convexPoints.clear();
@@ -35,6 +38,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
     if(currentTool != CARDINAL_SPLINE){
         splinePoints.clear();
+    }
+
+    if(currentTool != CLIP_RECT_POLYGON){
+        clipPoints.clear();
+    }
+
+    if(rectClipActive && (currentTool < 611 || currentTool > 614)){
+        rectClipActive = false;
+    }
+
+    if(squareClipActive && (currentTool < 621 || currentTool > 623)){
+        squareClipActive = false;
+    }
+
+    if(circleClipActive && (currentTool < 631 || currentTool > 633)){
+        circleClipActive = false;
     }
 
     switch (msg) {
@@ -86,7 +105,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
             }
 
             for (const auto& pt : splinePoints) {
-                Ellipse(hdc, pt.x - 2, pt.y - 2, pt.x + 2, pt.y + 2);
+                Ellipse(hdc, int(pt.x) - 2, int(pt.y) - 2, int(pt.x) + 2, int(pt.y) + 2);
+            }
+
+            for (const auto& pt : clipPoints) {
+                Ellipse(hdc, int(pt.x) - 2, int(pt.y) - 2, int(pt.x) + 2, int(pt.y) + 2);
             }
 
             EndPaint(hwnd, &ps);

@@ -90,6 +90,7 @@ HMENU CreateMainMenu() {
     AppendMenu(clippingRect, MF_STRING, CLIP_RECT_POINT, "Point");
     AppendMenu(clippingRect, MF_STRING, CLIP_RECT_LINE, "Line");
     AppendMenu(clippingRect, MF_STRING, CLIP_RECT_POLYGON, "Polygon");
+    AppendMenu(clippingRect, MF_STRING , CLIP_RECT_WINDOW, "Set Window");
 
     //*=========================================================================================================
 
@@ -97,13 +98,23 @@ HMENU CreateMainMenu() {
     HMENU clippingSquare = CreatePopupMenu();
     AppendMenu(clippingSquare, MF_STRING, CLIP_SQR_POINT, "Point");
     AppendMenu(clippingSquare, MF_STRING, CLIP_SQR_LINE, "Line");
+    AppendMenu(clippingSquare, MF_STRING , CLIP_SQR_WINDOW, "Set Window");
+
+    //*=========================================================================================================
+
+    // ? CLIPPING_SQUARE
+    HMENU clippingCircle = CreatePopupMenu();
+    AppendMenu(clippingCircle, MF_STRING, CLIP_CIRCLE_POINT, "Point");
+    AppendMenu(clippingCircle, MF_STRING, CLIP_CIRCLE_LINE, "Line");
+    AppendMenu(clippingCircle, MF_STRING , CLIP_CIRCLE_WINDOW, "Set Window");
 
     //*=========================================================================================================
 
     // ? CLIPPING
     HMENU clipping = CreatePopupMenu();
-    AppendMenu(clipping, MF_POPUP, (UINT_PTR)clippingRect, "Clipping algorithms using Rectangle");
-    AppendMenu(clipping, MF_POPUP, (UINT_PTR)clippingSquare, "Clipping algorithms using Square");
+    AppendMenu(clipping, MF_POPUP, (UINT_PTR)clippingRect, "Window Rectangle");
+    AppendMenu(clipping, MF_POPUP, (UINT_PTR)clippingSquare, "Window Square");
+    AppendMenu(clipping, MF_POPUP, (UINT_PTR)clippingCircle, "Window Circle");
 
     //!=========================================================================================================
 
